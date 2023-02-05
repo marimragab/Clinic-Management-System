@@ -1,6 +1,6 @@
 const { request } = require("express");
 const mongoose = require("mongoose");
-const Appointment = require("./../Model/appointment");
+const Appointment = require("../Models/appointment");
 
 //! No need for get all appointment on general, you need:
 //? Get specific doctor appointments on specific day or range of dates (doctor only)

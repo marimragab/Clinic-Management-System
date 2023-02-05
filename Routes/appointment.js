@@ -4,7 +4,7 @@ const {
   addNewAppointment,
   updateAppointment,
   deleteAppointment,
-} = require("./../Controller/appointment");
+} = require("../Controllers/appointment");
 const validator = require("./../Middlewares/validationMW");
 const {
   addAppointmentValidations,
