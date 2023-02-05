@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 const morgan = require("morgan");
 const app = express();
 
+const appointmentRoute = require("./Routes/appointment");
+
 require("dotenv").config();
 let port = process.env.PORT || 8080;
 
@@ -23,13 +25,11 @@ app.use(morgan(":method :url :response-time"));
 app.use(express.json());
 
 //Routes
-
-
+app.use(appointmentRoute);
 // Not Found Middleware
 app.use((request, response, next) => {
   response.status(404).json({ message: "Endpoint not found." });
 });
-
 
 //Error Middleware
 app.use((error, request, response, next) => {
