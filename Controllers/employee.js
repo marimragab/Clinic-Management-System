@@ -13,14 +13,15 @@ exports.getAllEmployees=(request,response,next)=>{
     .catch(error=>next(error))
 } 
 
-// add new teacher with status 201
+
 exports.addEmployee=(request,response,next)=>{
     let newEmployee=new employeeSchema({
         fullName:request.body.fullName,
         address:request.body.address,
         email:request.body.email,
         age:request.body.age,
-        roll:request.body.roll
+        roll:request.body.roll,
+        password:request.body.password
     });
     newEmployee.save()
     .then(result=>{
@@ -30,47 +31,35 @@ exports.addEmployee=(request,response,next)=>{
 }
   
 
-// update teacher 
+
 exports.updateEmployee=(request,response,next)=>{
         employeeSchema.updateOne({
-            _id:request.body._id    //get id
+            _id:request.body._id   
 },{
     $set:{fullName:request.body.fullName,
             address:request.body.address,
             email:request.body.email,
             age:request.body.age,
-            roll:request.body.roll}, 
+            roll:request.body.roll,
+            password:request.body.password}, 
 }).then(result=>{
-    response.status(200).json(result)       //succedd
+    response.status(200).json(result)      
 })
-.catch(error=>next(error))          //error
+.catch(error=>next(error))         
 }
 
-// delete teacher 
+
 exports.deleteEmployee=(request,response,next)=>{
     employeeSchema.deleteOne({
-        _id:request.body._id    //get id
+        _id:request.body._id   
 })
 .then(result=>{
-    response.status(200).json(result)       //succedd
+    response.status(200).json(result)      
 })
-.catch(error=>next(error))          //error
+.catch(error=>next(error))         
 }
 
-//get one teacher by Id
-exports.getEmployeeByID=(request,response,next)=>{
 
-    employeeSchema.findOne({_id:request.params.id})
-    .then(data=>{
-        if(data != null)             //mean found data so return data
-            response.status(200).json(data)
-           
-        else
-        {
-            next(new Error("not exist"))
-        }
-    })
-}
 
 
 

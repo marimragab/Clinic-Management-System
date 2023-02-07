@@ -1,7 +1,7 @@
 const mongoose=require("mongoose")
 const AutoIncrement = require('mongoose-sequence')(mongoose)
 
-//create schema
+
 const addressschema=new mongoose.Schema({
     city:{type:String,required:true},
     street:{type:String,required:true},
@@ -19,6 +19,8 @@ const schema=new mongoose.Schema({
     age:{
         type:Number,
         require:true,
+        min:18,
+        max:60
     },
     address:{
         type:addressschema,
@@ -33,7 +35,13 @@ const schema=new mongoose.Schema({
         required:true,
         unique:true,
         RegExp: ["/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/", 'Please fill a valid email address']
-        }
+        },
+        password:{
+            type:String,
+            RegExp:["/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/", "i"],
+            required:true,
+           
+        },
  
 },{ _id: false })
 

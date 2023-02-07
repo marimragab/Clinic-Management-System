@@ -10,12 +10,7 @@ router.route("/Employee")
     .get(controller.getAllEmployees)
     .post(validation.postValidation, validator ,controller.addEmployee)
     .patch(validation.patchValidation,controller.updateEmployee)
-    .delete([body("_id").isMongoId()],controller.deleteEmployee)
-   
-
-router.route("/Employee/:id").get(controller.getEmployeeByID)
+    .delete([body("_id").isInt()],controller.deleteEmployee)
              
-               
-
 module.exports=router;
 
