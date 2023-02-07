@@ -46,7 +46,6 @@ exports.updateEmployee=(request,response,next)=>{
 .catch(error=>next(error))         
 }
 
-// delete teacher 
 exports.deleteEmployee=(request,response,next)=>{
     employeeSchema.deleteOne({
         _id:request.body._id    
