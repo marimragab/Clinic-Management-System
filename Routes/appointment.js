@@ -25,7 +25,7 @@ const router = express.Router();
 router
   .route("/appointment")
   .get(getAllAppointments)
-  .post(addAppointmentValidations, validator, isPatient, addNewAppointment)
+  .post(addAppointmentValidations, validator, addNewAppointment)
   .patch(updateAppointmentValidations, validator, updateAppointment)
   .delete(deleteAppointmentValidations, validator, deleteAppointment);
 

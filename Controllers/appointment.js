@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const Appointment = require("../Models/appointment");
+// const Patient = require("../Models/patient");
+// const Doctor = require("../Models/doctor");
 
 //! No need for get all appointment on general, you need:
 //? Get specific doctor appointments on specific day (doctor only,admin)
@@ -51,33 +53,74 @@ const getAllAppointmentsOnSpecificDay = async (request, response, next) => {
 //! When he chooses suitable appointment then we notify the doctor with that new appointment and add that appointment
 //! to the doctor array of appointment objects
 //! Finally we save the appointment data on the database
-const addNewAppointment = (request, response, next) => {
-  let newAppointment = new Appointment({
-    _id: mongoose.Types.ObjectId(),
-    patient: request.body.patient,
-    doctor: request.body.doctor,
-    date: request.body.date,
-    time: request.body.time,
-    appointmentType: request.body.appointmentType,
-  });
-  newAppointment
-    .save()
-    .then((data) => {
-      response.status(200).json(data);
-    })
-    .catch((error) => next(error));
+const addNewAppointment = async (request, response, next) => {
+  let { patient, doctor, date, time, appointmentType } = request.body;
+  // let isPatient = await Patient.findOne({ _id: patient });
+  // let isDoctor = await Doctor.findOne({ _id: doctor });
+  //! the date of the appointment must be the date of current day if its suitable or the after that
+  if (!isValidDate(date)) {
+    let error = new Error(
+      "Unvalid date, you should provide date after or equal today"
+    );
+    next(error);
+  } else {
+    let newAppointment = new Appointment({
+      _id: mongoose.Types.ObjectId(),
+      patient,
+      doctor,
+      date,
+      time,
+      appointmentType,
+    });
+    newAppointment
+      .save()
+      .then((data) => {
+        response.status(200).json(data);
+      })
+      .catch((error) => next(error));
+  }
 };
 
 //! update only the specific value user want to update
 //! notify the doctor with the update
 //! update the doctor appointments array
+//! if the patient updated the doctor, then:
+//* notify the old doctor that the patient cancelled the appointment (delete the appointment from doctor's appointments array)
+//* add the appointment to the new doctor and notify him
 //! patient only can update his appointment (doctor may can update also ?? discuss with team)
-const updateAppointment = (request, response, next) => {
-  Appointment.findOne({ _id: request.body.id })
-    .then((appointment) => {
-      response.status(200).json(appointment);
-    })
-    .catch((error) => next(error));
+const updateAppointment = async (request, response, next) => {
+  const userUpdatesKeys = Object.keys(request.body);
+  console.log(userUpdatesKeys);
+  const notValidUpdate = userUpdatesKeys.includes("patient");
+
+  if (notValidUpdate) {
+    let error = new Error(
+      "Unvalid requested updates, you can't update patient data"
+    );
+    next(error);
+  } else {
+    let userUpdates = request.body;
+    try {
+      let appointment = await Appointment.findOne({ _id: request.body.id });
+      //!before update check that date and time are available (create generic function as you need it on create also)
+      for (const key in userUpdates) {
+        if (key == "date") {
+          if (!isValidDate(userUpdates[key])) {
+            let error = new Error(
+              "Unvalid date, you should provide date after or equal today"
+            );
+            next(error);
+          }
+        } else appointment[key] = userUpdates[key];
+      }
+      await appointment.save();
+      response
+        .status(200)
+        .json({ message: "Appointment updated successfully ....." });
+    } catch (error) {
+      next(error);
+    }
+  }
 };
 
 const deleteAppointment = (request, response, next) => {
@@ -87,6 +130,16 @@ const deleteAppointment = (request, response, next) => {
     })
     .catch((error) => next(error));
 };
+
+function isValidDate(date) {
+  let today = new Date()
+    .toLocaleDateString()
+    .replaceAll("/", "-")
+    .split("-")
+    .reverse()
+    .join("-");
+  return date >= today;
+}
 
 module.exports = {
   getAllAppointments,
