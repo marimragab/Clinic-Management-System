@@ -11,13 +11,18 @@ const {
   updateAppointmentValidations,
   deleteAppointmentValidations,
 } = require("./../Validations/appointment");
+const {
+  isDoctor,
+  isPatient,
+  isDoctorOrPatient,
+} = require("./../Middlewares/authenticationMW");
 
 const router = express.Router();
 
 router
   .route("/appointment")
   .get(getAllAppointments)
-  .post(addAppointmentValidations, validator, addNewAppointment)
+  .post(addAppointmentValidations, validator, isPatient, addNewAppointment)
   .patch(updateAppointmentValidations, validator, updateAppointment)
   .delete(deleteAppointmentValidations, validator, deleteAppointment);
 

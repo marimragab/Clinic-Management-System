@@ -1,4 +1,3 @@
-const { request } = require("express");
 const mongoose = require("mongoose");
 const Appointment = require("../Models/appointment");
 
@@ -61,5 +60,5 @@ module.exports = {
   getAllAppointments,
   addNewAppointment,
   updateAppointment,
-  deleteAppointment
+  deleteAppointment,
 };
