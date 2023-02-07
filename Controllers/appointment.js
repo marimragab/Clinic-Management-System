@@ -1,9 +1,8 @@
-const { request } = require("express");
 const mongoose = require("mongoose");
 const Appointment = require("../Models/appointment");
 
 //! No need for get all appointment on general, you need:
-//? Get specific doctor appointments on specific day or range of dates (doctor only)
+//? Get specific doctor appointments on specific day (doctor only,admin)
 //? Get all appointment on specific day for all doctors (receptionist)
 const getAllAppointments = (request, response, next) => {
   Appointment.find()
@@ -11,6 +10,38 @@ const getAllAppointments = (request, response, next) => {
       response.status(200).json(data);
     })
     .catch((error) => next(error));
+};
+
+const getSpecificDoctorAppointmentsOnDay = async (request, response, next) => {
+  try {
+    const { doctor, day } = request.params;
+    let doctorAppointments = await Appointment.find({
+      doctorId: doctor,
+      date: day,
+    });
+    // if (doctorAppointments)
+    response.status(200).json(doctorAppointments);
+    // else
+    //   response
+    //     .status(200)
+    //     .json({ message: "This doctor has no appointments on that day" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getAllAppointmentsOnSpecificDay = async (request, response, next) => {
+  console.log(request.params.date);
+  let { date } = request.query;
+  // console.log(date.query("/", "-"));
+  try {
+    let allAppointmentsOnDay = await Appointment.find({
+      date: request.query.date,
+    });
+    response.status(200).json(allAppointmentsOnDay);
+  } catch (error) {
+    next(error);
+  }
 };
 
 //! First check of the patient that tries to create a new appointment is registered on our system or not,if
@@ -59,7 +90,9 @@ const deleteAppointment = (request, response, next) => {
 
 module.exports = {
   getAllAppointments,
+  getSpecificDoctorAppointmentsOnDay,
+  getAllAppointmentsOnSpecificDay,
   addNewAppointment,
   updateAppointment,
-  deleteAppointment
+  deleteAppointment,
 };
