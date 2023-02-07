@@ -32,7 +32,7 @@ const prescriptionSchema = new mongoose.Schema(
     },
     medicine: [
       {
-        name: {
+        info: {
           type: mongoose.Types.ObjectId,
           ref: "",
           required: [true, "You Should provide medicine data"],
