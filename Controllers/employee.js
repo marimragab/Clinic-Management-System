@@ -13,14 +13,14 @@ exports.getAllEmployees=(request,response,next)=>{
     .catch(error=>next(error))
 } 
 
-
 exports.addEmployee=(request,response,next)=>{
     let newEmployee=new employeeSchema({
         fullName:request.body.fullName,
         address:request.body.address,
         email:request.body.email,
         age:request.body.age,
-        roll:request.body.roll
+        roll:request.body.roll,
+        password:request.body.password
     });
     newEmployee.save()
     .then(result=>{
@@ -39,7 +39,8 @@ exports.updateEmployee=(request,response,next)=>{
             address:request.body.address,
             email:request.body.email,
             age:request.body.age,
-            roll:request.body.roll}, 
+            roll:request.body.roll,
+            password:request.body.password}, 
 }).then(result=>{
     response.status(200).json(result)       
 })
@@ -53,23 +54,5 @@ exports.deleteEmployee=(request,response,next)=>{
 .then(result=>{
     response.status(200).json(result)       
 })
-.catch(error=>next(error))          
+.catch(error=>next(error))         
 }
-
-
-exports.getEmployeeByID=(request,response,next)=>{
-
-    employeeSchema.findOne({_id:request.params.id})
-    .then(data=>{
-        if(data != null)             
-            response.status(200).json(data)
-           
-        else
-        {
-            next(new Error("not exist"))
-        }
-    })
-}
-
-
-
