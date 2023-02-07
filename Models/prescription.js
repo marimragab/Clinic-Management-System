@@ -30,7 +30,7 @@ const prescriptionSchema = new mongoose.Schema(
           `${props.value} is not a valid date format yyyy-mm-dd or yyyy/mm/dd`,
       },
     },
-    medicine: [
+    medicines: [
       {
         info: {
           type: mongoose.Types.ObjectId,
@@ -41,9 +41,10 @@ const prescriptionSchema = new mongoose.Schema(
           type: String,
           required: [true, "You Should provide medicine dose "],
         },
+        _id: false,
       },
     ],
-    follow_up: {
+    followup: {
       type: String,
       required: [
         true,
