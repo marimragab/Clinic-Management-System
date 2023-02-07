@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const doctorSchema = new mongoose.Schema(
   {
     _id: mongoose.Types.ObjectId,
-    name: {type: String, required: true},
+    name: {type: String, required: true,unique:true},
     specialization: {type: String, required: true},
     appointment: [{
       type: mongoose.Types.ObjectId,
