@@ -56,14 +56,3 @@ exports.deleteEmployee=(request,response,next)=>{
 })
 .catch(error=>next(error))         
 }
-<<<<<<< HEAD
-
-
-
-
-
-
-
-
-=======
->>>>>>> e943e76a7d98d90e5f4b0b035b05fea459d7c5af
