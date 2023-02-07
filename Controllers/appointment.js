@@ -16,7 +16,7 @@ const getSpecificDoctorAppointmentsOnDay = async (request, response, next) => {
   try {
     const { doctor, day } = request.params;
     let doctorAppointments = await Appointment.find({
-      doctorId: doctor,
+      doctor,
       date: day,
     });
     // if (doctorAppointments)
