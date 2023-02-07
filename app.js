@@ -4,6 +4,7 @@ const morgan = require("morgan");
 const app = express();
 
 const appointmentRoute = require("./Routes/appointment");
+const employeeRoute = require("./Routes/employee");
 
 require("dotenv").config();
 let port = process.env.PORT || 8080;
@@ -26,6 +27,7 @@ app.use(express.json());
 
 //Routes
 app.use(appointmentRoute);
+app.use(employeeRoute);
 // Not Found Middleware
 app.use((request, response, next) => {
   response.status(404).json({ message: "Endpoint not found." });
