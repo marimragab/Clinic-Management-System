@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
-const autoIncrement = require("mongoose-auto-increment");
-autoIncrement.initialize(mongoose.connection);
+const AutoIncrement = require('mongoose-sequence')(mongoose)
+
+// const autoIncrement = require("mongoose-auto-increment");
+// autoIncrement.initialize(mongoose.connection);
 const medicineSchema = new mongoose.Schema(
     
     {
@@ -34,18 +36,16 @@ const medicineSchema = new mongoose.Schema(
     // { timestamps: true }
 )
 
-medicineSchema.plugin(autoIncrement.plugin, {
+// medicineSchema.plugin(autoIncrement.plugin, {
 
-    model: "medicine",
+//     model: "medicine",
 
-    field: "_id",
+//     field: "_id",
 
-    startAt: 1,
+//     startAt: 1,
 
-});
-
-
+// });
 
 
-
+medicineSchema.plugin(AutoIncrement,{id:"medicine"});
 module.exports = mongoose.model("medicines", medicineSchema);
