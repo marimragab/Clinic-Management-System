@@ -4,6 +4,8 @@ const morgan = require("morgan");
 const app = express();
 
 const appointmentRoute = require("./Routes/appointment");
+const employeeRoute = require("./Routes/employee");
+const ServicesRoute = require("./Routes/clinicServices");
 const prescriptionRoute = require("./Routes/prescription");
 const invoiceRoute = require("./Routes/invoice");
 
@@ -48,6 +50,9 @@ app.use(express.json());
 // app.use(authenticationMW);
 //Routes
 app.use(appointmentRoute);
+app.use(employeeRoute);
+app.use(ServicesRoute);
+
 app.use(prescriptionRoute);
 app.use(invoiceRoute);
 
