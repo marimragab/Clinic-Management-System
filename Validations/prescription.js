@@ -22,7 +22,9 @@ const addPrescriptionValidations = [
     .notEmpty()
     .withMessage("Prescription medicines array is required")
     .isArray()
-    .withMessage("Prescription medicines must be an array"),
+    .withMessage("Prescription medicines must be an array")
+    .isLength({ min: 1 })
+    .withMessage("Medicines must contain at least one medicine data"),
   body("medicines.*.info")
     .notEmpty()
     .withMessage("Prescription medicine info  is required")

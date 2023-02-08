@@ -14,6 +14,7 @@ const {
   getSpecificPatientPrescriptions,
   getSpecificPatientPrescriptionsForSpecificDoctor,
   updatePrescription,
+  deletePrescription,
 } = require("./../Controllers/prescription");
 
 const router = express.Router();
@@ -22,7 +23,8 @@ router
   .route("/prescription")
   .get(getAllPrescriptions)
   .post(addPrescriptionValidations, validator, addNewPrescription)
-  .patch(updatePrescriptionValidations, validator, updatePrescription);
+  .patch(updatePrescriptionValidations, validator, updatePrescription)
+  .delete(deletePrescription);
 
 router.get("/prescription/:patient", getSpecificPatientPrescriptions);
 router.get(

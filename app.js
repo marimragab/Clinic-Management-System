@@ -1,14 +1,28 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
+const doctorRoute=require("./Routes/doctor");
 const app = express();
 
 const appointmentRoute = require("./Routes/appointment");
+const pationtRouter = require("./Routes/patient");
+const medicineRoute = require("./Routes/medicine");
 const employeeRoute = require("./Routes/employee");
 const ServicesRoute = require("./Routes/clinicServices");
 const prescriptionRoute = require("./Routes/prescription");
+const invoiceRoute = require("./Routes/invoice");
+
 // const authRoute = require("./Controllers/authentication");
 // const authenticationMW = require("./Middlewares/authenticationMW");
+
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./swagger.json");
+
+app.use(
+  "/dental-clinic-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDocument)
+);
 
 require("dotenv").config();
 let port = process.env.PORT || 8080;
@@ -18,14 +32,14 @@ const dbURL = `${process.env.DB_URL}`;
 mongoose
   .connect(dbURL)
   .then(() => {
-    const server = app.listen(port, () => {
+    app.listen(port, () => {
       console.log(`App listens on http://localhost:${port}`);
     });
     // adding socket.io to use on notify doctor with new appointment
-    const io = require("socket.io")(server);
-    io.on("connection", (socket) => {
-      console.log("Client Connected ");
-    });
+    // const io = require("socket.io")(server);
+    // io.on("connection", (socket) => {
+    //   console.log("Client Connected ");
+    // });
   })
   .catch((error) => {
     console.log("DB Connection Error", error);
@@ -38,15 +52,18 @@ app.use(express.json());
 // app.use(authRoute.login);
 // app.use(authenticationMW);
 //Routes
+app.use(doctorRoute);
 app.use(appointmentRoute);
+app.use(pationtRouter);
+app.use(medicineRoute);
 app.use(employeeRoute);
 app.use(ServicesRoute);
-
 app.use(prescriptionRoute);
+app.use(invoiceRoute);
 
 // Not Found Middleware
 app.use((request, response, next) => {
-  response.status(404).json({ message: "Endpoint not found." });
+  response.status(404).json({ message: "End point not found." });
 });
 
 //Error Middleware

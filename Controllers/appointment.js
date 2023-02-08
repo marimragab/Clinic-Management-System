@@ -2,16 +2,22 @@ const mongoose = require("mongoose");
 const Appointment = require("../Models/appointment");
 // const Patient = require("../Models/patient");
 // const Doctor = require("../Models/doctor");
+const filerResults = require("./../utils/filterAndSort");
+const { sendEmail } = require("./../utils/email");
 
 //! No need for get all appointment on general, you need:
 //? Get specific doctor appointments on specific day (doctor only,admin)
 //? Get all appointment on specific day for all doctors (receptionist)
-const getAllAppointments = (request, response, next) => {
-  Appointment.find()
-    .then((data) => {
-      response.status(200).json(data);
-    })
-    .catch((error) => next(error));
+const getAllAppointments = async (request, response, next) => {
+  console.log(request.query);
+  try {
+    let allAppointments = await filerResults(request.query, Appointment);
+    response
+      .status(200)
+      .json({ count: allAppointments.length, data: allAppointments });
+  } catch (error) {
+    next(error);
+  }
 };
 
 const getSpecificDoctorAppointmentsOnDay = async (request, response, next) => {
@@ -58,27 +64,32 @@ const addNewAppointment = async (request, response, next) => {
   // let isPatient = await Patient.findOne({ _id: patient });
   // let isDoctor = await Doctor.findOne({ _id: doctor });
   //! the date of the appointment must be the date of current day if its suitable or the after that
-  if (!isValidDate(date)) {
-    let error = new Error(
-      "Unvalid date, you should provide date after or equal today"
-    );
-    next(error);
-  } else {
-    let newAppointment = new Appointment({
-      _id: mongoose.Types.ObjectId(),
-      patient,
-      doctor,
-      date,
-      time,
-      appointmentType,
-    });
-    newAppointment
-      .save()
-      .then((data) => {
-        response.status(200).json(data);
-      })
-      .catch((error) => next(error));
-  }
+  // if (!isValidDate(date)) {
+  //   let error = new Error(
+  //     "Unvalid date, you should provide date after or equal today"
+  //   );
+  //   next(error);
+  // } else {
+  let newAppointment = new Appointment({
+    _id: mongoose.Types.ObjectId(),
+    patient,
+    doctor,
+    date,
+    time,
+    appointmentType,
+  });
+  newAppointment
+    .save()
+    .then((data) => {
+      sendEmail(
+        "mariamragab01@gmail.com",
+        "New Appointment Assigned",
+        "<h1>Hello Mariam</h1>"
+      );
+      response.status(200).json(data);
+    })
+    .catch((error) => next(error));
+  // }
 };
 
 //! update only the specific value user want to update
