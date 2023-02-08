@@ -4,7 +4,7 @@ const {
   addNewDoctor,
   updateDoctor,
   deleteDoctor,
-} = require("../Controller/doctor");
+} = require("../Controllers/doctor");
 const validator = require("./../Middlewares/validationMW");
 const {
   addDoctorValidations,

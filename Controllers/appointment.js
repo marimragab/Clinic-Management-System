@@ -58,12 +58,12 @@ const addNewAppointment = async (request, response, next) => {
   // let isPatient = await Patient.findOne({ _id: patient });
   // let isDoctor = await Doctor.findOne({ _id: doctor });
   //! the date of the appointment must be the date of current day if its suitable or the after that
-  if (!isValidDate(date)) {
+  /*if (!isValidDate(date)) {
     let error = new Error(
       "Unvalid date, you should provide date after or equal today"
     );
     next(error);
-  } else {
+  } else {*/
     let newAppointment = new Appointment({
       _id: mongoose.Types.ObjectId(),
       patient,
@@ -78,8 +78,7 @@ const addNewAppointment = async (request, response, next) => {
         response.status(200).json(data);
       })
       .catch((error) => next(error));
-  }
-};
+  };
 
 //! update only the specific value user want to update
 //! notify the doctor with the update

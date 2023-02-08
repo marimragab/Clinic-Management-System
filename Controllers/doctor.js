@@ -1,6 +1,6 @@
 const { request } = require("express");
 const mongoose = require("mongoose");
-const doctorSchema = require("../Model/doctor");
+const doctorSchema = require("../Models/doctor");
 
 const getAllDoctors = (request, response, next) => {
     doctorSchema.find()
@@ -16,6 +16,8 @@ const addNewDoctor = (request, response, next) => {
     name: request.body.name,
     specialization: request.body.specialization,
     appointment: request.body.appointment,
+    email:request.body.email,
+    password:request.body.password
   });
   
   newDoctor.save()
