@@ -4,6 +4,7 @@ const morgan = require("morgan");
 const app = express();
 
 const appointmentRoute = require("./Routes/appointment");
+const pationtRouter = require("./Routes/patient");
 const employeeRoute = require("./Routes/employee");
 const ServicesRoute = require("./Routes/clinicServices");
 const prescriptionRoute = require("./Routes/prescription");
@@ -50,15 +51,15 @@ app.use(express.json());
 // app.use(authenticationMW);
 //Routes
 app.use(appointmentRoute);
+app.use(pationtRouter);
 app.use(employeeRoute);
 app.use(ServicesRoute);
-
 app.use(prescriptionRoute);
 app.use(invoiceRoute);
 
 // Not Found Middleware
 app.use((request, response, next) => {
-  response.status(404).json({ message: "Endpoint not found." });
+  response.status(404).json({ message: "End point not found." });
 });
 
 //Error Middleware
