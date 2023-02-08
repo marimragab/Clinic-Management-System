@@ -26,7 +26,7 @@ exports.addPatient = async(request,response,next)=>{
     });
     newPatient.save()
     .then(result=>{
-        response.status(201).json(result);
+        response.status(201).json({message:"added",data:result});
     })
     .catch(error=>next(error))
 }
