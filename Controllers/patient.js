@@ -1,5 +1,6 @@
 //CRUD
 const mongoose=require("mongoose");
+const bcrypt=require("bcrypt")
 require("./../Models/patient")
 const patientSchema = mongoose.model("patient")
 
@@ -11,10 +12,12 @@ exports.getAllPatients = (request,response,next)=>{
     .catch(error=>next(error))
 }
 
-exports.addPatient = (request,response,next)=>{
+exports.addPatient = async(request,response,next)=>{
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(request.body.password, salt);
     let newPatient = new patientSchema({
         fullName:request.body.fullName,
-        password:request.body.password,
+        password:hashedPassword,
         age:request.body.age,
         email:request.body.email,
         address:request.body.address,
