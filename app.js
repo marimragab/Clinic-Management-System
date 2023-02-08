@@ -1,10 +1,12 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
+const doctorRoute=require("./Routes/doctor");
 const app = express();
 
 const appointmentRoute = require("./Routes/appointment");
 const pationtRouter = require("./Routes/patient");
+const medicineRoute = require("./Routes/medicine");
 const employeeRoute = require("./Routes/employee");
 const ServicesRoute = require("./Routes/clinicServices");
 const prescriptionRoute = require("./Routes/prescription");
@@ -50,8 +52,10 @@ app.use(express.json());
 // app.use(authRoute.login);
 // app.use(authenticationMW);
 //Routes
+app.use(doctorRoute);
 app.use(appointmentRoute);
 app.use(pationtRouter);
+app.use(medicineRoute);
 app.use(employeeRoute);
 app.use(ServicesRoute);
 app.use(prescriptionRoute);
