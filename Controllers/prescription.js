@@ -1,13 +1,13 @@
 const mongoose = require("mongoose");
 const Prescription = require("../Models/prescription");
+const filerResults = require("./../utils/filterAndSort");
 
-//! No need for get all appointment on general, you need:
-//? Get specific doctor appointments on specific day (doctor only,admin)
-//? Get all appointment on specific day for all doctors (receptionist)
 const getAllPrescriptions = (request, response, next) => {
-  Prescription.find()
-    .then((data) => {
-      response.status(200).json(data);
+  filerResults(request.query, Prescription)
+    .then((prescriptions) => {
+      response
+        .status(200)
+        .json({ count: prescriptions.length, data: prescriptions });
     })
     .catch((error) => next(error));
 };
@@ -68,10 +68,18 @@ const getSpecificPatientPrescriptionsForSpecificDoctor = async (
 //! Update prescription (Is not allowed to update doctor or patient, only medicines and follow up date can be updated)
 const updatePrescription = (request, response, next) => {};
 
+const deletePrescription = (request, response, next) => {
+  Prescription.deleteOne({ _id: request.body.id })
+    .then((data) => {
+      response.status(200).json("Prescription deleted successfully");
+    })
+    .catch((error) => next(error));
+};
 module.exports = {
   getAllPrescriptions,
   addNewPrescription,
   getSpecificPatientPrescriptions,
   getSpecificPatientPrescriptionsForSpecificDoctor,
   updatePrescription,
+  deletePrescription
 };
