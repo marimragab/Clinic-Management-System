@@ -5,8 +5,19 @@ const app = express();
 
 const appointmentRoute = require("./Routes/appointment");
 const prescriptionRoute = require("./Routes/prescription");
+const invoiceRoute = require("./Routes/invoice");
+
 // const authRoute = require("./Controllers/authentication");
 // const authenticationMW = require("./Middlewares/authenticationMW");
+
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./swagger.json");
+
+app.use(
+  "/dental-clinic-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDocument)
+);
 
 require("dotenv").config();
 let port = process.env.PORT || 8080;
@@ -38,6 +49,7 @@ app.use(express.json());
 //Routes
 app.use(appointmentRoute);
 app.use(prescriptionRoute);
+app.use(invoiceRoute);
 
 // Not Found Middleware
 app.use((request, response, next) => {
