@@ -4,9 +4,21 @@ const  {body,query,param,validationResult, Result}=require("express-validator");
 const { request } = require("express");
  require("./../Models/employee")
 const employeeSchema=mongoose.model("employee")
+const bcrypt = require('bcrypt');
+
 
 exports.getAllEmployees=(request,response,next)=>{
-    employeeSchema.find()
+    let query={}
+    //filter by fullName
+    if(request.query.fullName){
+        query.fullName=request.query.fullName
+    }
+    employeeSchema.find(query)
+    .populate('fullName')
+    //sort by fullName
+    .skip(0)
+    .limit(10)
+    .sort({fullName : 1})
     .then((data)=>{
         response.status(200).json(data)
     })

@@ -8,9 +8,12 @@ const router= express.Router();
 
 router.route("/Employee")
     .get(controller.getAllEmployees)
+    //.get(query.sort({ fullName: 'asc' }))
     .post(validation.postValidation, validator ,controller.addEmployee)
     .patch(validation.patchValidation,controller.updateEmployee)
     .delete([body("_id").isInt()],controller.deleteEmployee)
-             
+
+
+           
 module.exports=router;
 
