@@ -72,8 +72,24 @@ const deleteAppointmentValidations = [
     .withMessage("Appointment id must be objectId"),
 ];
 
+const getDoctorAppointmentsOnDayValidations = [
+  param("doctor")
+    .notEmpty()
+    .withMessage("Doctor id is required")
+    .isMongoId()
+    .withMessage("Doctor id must be objectId"),
+  param("day")
+    .notEmpty()
+    .withMessage("Date is required")
+    .isDate()
+    .withMessage(
+      "Date must be a valid date on format YYYY/MM/DD or YYYY-MM-DD"
+    ),
+];
+
 module.exports = {
   addAppointmentValidations,
   updateAppointmentValidations,
   deleteAppointmentValidations,
+  getDoctorAppointmentsOnDayValidations
 };
