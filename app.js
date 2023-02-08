@@ -16,14 +16,14 @@ const dbURL = `${process.env.DB_URL}`;
 mongoose
   .connect(dbURL)
   .then(() => {
-    const server = app.listen(port, () => {
+    app.listen(port, () => {
       console.log(`App listens on http://localhost:${port}`);
     });
     // adding socket.io to use on notify doctor with new appointment
-    const io = require("socket.io")(server);
-    io.on("connection", (socket) => {
-      console.log("Client Connected ");
-    });
+    // const io = require("socket.io")(server);
+    // io.on("connection", (socket) => {
+    //   console.log("Client Connected ");
+    // });
   })
   .catch((error) => {
     console.log("DB Connection Error", error);
