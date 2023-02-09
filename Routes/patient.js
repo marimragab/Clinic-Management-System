@@ -4,10 +4,14 @@ const validator = require("./../Middlewares/validationMW");
 const {addPatientValidation,updatePatientValidation,deletePatientValidation} = require("./../Validations/patient");
 const router = express.Router();
 
+const {
+    isReceptionistOrAccountantOrAdmin, isReceptionistOrPatient,
+  } = require("./../Middlewares/authenticationMW");
+
 router.route("/patient")
-.get(controller.getAllPatients)
-.post(addPatientValidation,validator,controller.addPatient)
-.patch(updatePatientValidation,validator,controller.updatePatient)
-.delete(deletePatientValidation,validator,controller.deletaPatient)
+.get(isReceptionistOrAccountantOrAdmin,controller.getAllPatients)
+.post(addPatientValidation,validator,isReceptionistOrPatient,controller.addPatient)
+.patch(updatePatientValidation,validator,isReceptionistOrPatient,controller.updatePatient)
+.delete(deletePatientValidation,validator,isReceptionistOrPatient,controller.deletaPatient)
 
 module.exports = router;

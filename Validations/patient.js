@@ -48,8 +48,8 @@ const addPatientValidation = [
     .notEmpty()
     .withMessage("Phone number is required")
     .isInt()
-    .withMessage("Phone number can only be numbers"),
-  //.matches(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{4}[-\s\.]?[0-9]{4,5}$/)
+    .withMessage("Phone number can only be numbers")
+    .matches(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{4}[-\s\.]?[0-9]{4,5}$/),
   body("paymentMethod")
     .isAlpha("en-US", { ignore: "s - / , ." })
     .withMessage("paymentMethod should be string")

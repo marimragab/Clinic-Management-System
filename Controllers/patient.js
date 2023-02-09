@@ -3,9 +3,10 @@ const mongoose=require("mongoose");
 const bcrypt=require("bcrypt")
 require("./../Models/patient")
 const patientSchema = mongoose.model("patients")
+const filerResults = require("./../utils/filterAndSort");
 
 exports.getAllPatients = (request,response,next)=>{
-    patientSchema.find()
+    filerResults(request.query, patientSchema)
     .then((data)=>{
         response.status(200).json(data)
     })

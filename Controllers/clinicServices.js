@@ -6,6 +6,7 @@ const { request } = require("express");
 const servicesSchema=mongoose.model("clinicServices")
 
 exports.getAllServices=(request,response,next)=>{
+    console.log(request.role)
     servicesSchema.find()
     .then((data)=>{
         response.status(200).json(data)

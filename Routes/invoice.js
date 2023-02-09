@@ -5,7 +5,7 @@ const {
   addNewInvoice,
   updateInvoice,
   deleteInvoice,
-  getSpecificInvoice
+  getSpecificInvoice,
 } = require("../Controllers/invoice");
 
 const validator = require("./../Middlewares/validationMW");
@@ -13,25 +13,30 @@ const validator = require("./../Middlewares/validationMW");
 const {
   addInvoiceValidations,
   updateInvoiceValidations,
-  idParamInvoiceValidations 
+  idParamInvoiceValidations,
 } = require("./../Validations/invoice");
 
 const {
-  isDoctor,
-  isPatient,
-  isDoctorOrPatient,
+  isAccountant,
+  isReceptionistOrPatientOrAccountantOrAdmin,
 } = require("./../Middlewares/authenticationMW");
 
 const router = express.Router();
 
 router
   .route("/invoice")
+  .all(isAccountant)
   .get(getAllInvoices)
   .post(addInvoiceValidations, validator, addNewInvoice)
   .patch(updateInvoiceValidations, validator, updateInvoice);
 
 router
   .route("/invoice/:id")
-  .get( idParamInvoiceValidations ,validator,getSpecificInvoice)
-  .delete( idParamInvoiceValidations , validator, deleteInvoice);
+  .get(
+    idParamInvoiceValidations,
+    isReceptionistOrPatientOrAccountantOrAdmin,
+    validator,
+    getSpecificInvoice
+  )
+  .delete(idParamInvoiceValidations, validator, isAccountant, deleteInvoice);
 module.exports = router;

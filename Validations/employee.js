@@ -11,7 +11,7 @@ let postValidation = [
   body("address.building").isInt(),
 
   body("roll")
-    .isIn(["receptionist", "Accountant", "pharmaceutical", "nurse"])
+    .isIn(["Admin","receptionist", "Accountant", "pharmaceutical", "nurse"])
     .isAlpha()
     .withMessage("Not avaliable roll"),
 
@@ -31,7 +31,7 @@ let patchValidation = [
   body("address.street").isAlpha().optional(),
   body("address.building").isInt().optional(),
   body("roll")
-    .isIn(["receptionist", "Accountant", "pharmaceutical"])
+    .isIn(["Admin","receptionist", "Accountant", "pharmaceutical"])
     .isAlpha()
     .optional(),
   body("email").isEmail().optional(),

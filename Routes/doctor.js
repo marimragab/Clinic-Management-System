@@ -12,13 +12,18 @@ const {
   deleteDoctorValidations,
 } = require("./../Validations/doctor");
 
+const {
+  isAdmin,
+  isReceptionistOrAccountantOrAdmin ,
+} = require("./../Middlewares/authenticationMW");
+
 const router = express.Router();
 
 router
   .route("/doctor")
-  .get(getAllDoctors)
-  .post(addDoctorValidations, validator, addNewDoctor)
-  .patch(updateDoctorValidations, validator, updateDoctor)
-  .delete(deleteDoctorValidations, validator, deleteDoctor);
+  .get(isReceptionistOrAccountantOrAdmin, getAllDoctors)
+  .post(addDoctorValidations, validator, isAdmin, addNewDoctor)
+  .patch(updateDoctorValidations, validator, isAdmin, updateDoctor)
+  .delete(deleteDoctorValidations, validator, isAdmin, deleteDoctor);
 
 module.exports = router;

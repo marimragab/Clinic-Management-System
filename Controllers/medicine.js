@@ -1,9 +1,10 @@
 const { request } = require("express");
 const mongoose = require("mongoose");
 const Medicine = require("../Models/medicine");
+const filerResults = require("./../utils/filterAndSort");
 
 const getAllMedicine = (request, response, next) => {
-  Medicine.find()
+  filerResults(request.query, Medicine)
     .then((data) => {
       response.status(200).json(data);
     })

@@ -12,8 +12,8 @@ const ServicesRoute = require("./Routes/clinicServices");
 const prescriptionRoute = require("./Routes/prescription");
 const invoiceRoute = require("./Routes/invoice");
 const reportsRoute=require("./Routes/report")
-// const authRoute = require("./Controllers/authentication");
-// const authenticationMW = require("./Middlewares/authenticationMW");
+const authRoute = require("./Controllers/authentication");
+const authenticationMW = require("./Middlewares/authenticationMW");
 
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger.json");
@@ -49,8 +49,8 @@ app.use(morgan(":method :url :response-time"));
 app.use(express.json());
 
 //register (who can register on our system?)
-// app.use(authRoute.login);
-// app.use(authenticationMW);
+app.use(authRoute.login);
+app.use(authenticationMW);
 //Routes
 app.use(doctorRoute);
 app.use(appointmentRoute);

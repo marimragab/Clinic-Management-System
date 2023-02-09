@@ -33,7 +33,7 @@ const updateMedicineValidations = [
   body("price")
     .notEmpty()
     .withMessage("price of medicine is required")
-    .isInt()
+    .isFloat()
     .withMessage("price of medicine must be number")
     .optional(),
   body("description")

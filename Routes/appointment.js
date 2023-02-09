@@ -1,41 +1,32 @@
 const express = require("express");
 const {
   getAllAppointments,
-  getSpecificDoctorAppointmentsOnDay,
-  getAllAppointmentsOnSpecificDay,
   addNewAppointment,
   updateAppointment,
   deleteAppointment,
 } = require("../Controllers/appointment");
+
 const validator = require("./../Middlewares/validationMW");
+
 const {
   addAppointmentValidations,
   updateAppointmentValidations,
   deleteAppointmentValidations,
-  getDoctorAppointmentsOnDayValidations,
 } = require("./../Validations/appointment");
+
 const {
-  isDoctor,
-  isPatient,
-  isDoctorOrPatient,
+  isReceptionist,
+  isReceptionistOrPatient,
 } = require("./../Middlewares/authenticationMW");
 
 const router = express.Router();
 
 router
   .route("/appointment")
-  .get(getAllAppointments)
-  .post(addAppointmentValidations, validator, addNewAppointment)
-  .patch(updateAppointmentValidations, validator, updateAppointment)
-  .delete(deleteAppointmentValidations, validator, deleteAppointment);
+  .get(isReceptionist,getAllAppointments)
+  .post(addAppointmentValidations, validator,isReceptionistOrPatient, addNewAppointment)
+  .patch(updateAppointmentValidations, validator,isReceptionistOrPatient, updateAppointment)
+  .delete(deleteAppointmentValidations, validator,isReceptionistOrPatient ,deleteAppointment);
 
-router
-  .route("/appointment/:doctor/:day")
-  .get(
-    getDoctorAppointmentsOnDayValidations,
-    validator,
-    getSpecificDoctorAppointmentsOnDay
-  );
 
-router.get("/appointment/day", getAllAppointmentsOnSpecificDay);
 module.exports = router;

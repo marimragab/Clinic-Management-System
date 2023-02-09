@@ -31,7 +31,7 @@ const schema = new mongoose.Schema(
     roll: {
       type: String,
       required: true,
-      enum: ["receptionist", "Accountant", "pharmaceutical", "nurse"],
+      enum: ["Admin","receptionist", "Accountant", "pharmaceutical", "nurse"],
     },
     email: {
       type: String,

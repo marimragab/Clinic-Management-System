@@ -13,9 +13,13 @@ const {
   } = require("./../Validations/medicine");
   
   const router = express.Router();
-  
+  const {
+    isPharmaceutical,
+  } = require("./../Middlewares/authenticationMW");
+
   router
     .route("/medicine")
+    .all(isPharmaceutical)
     .get(getAllMedicine)
     .post(addMedicineValidations, validator, addNewMedicine)
     .patch(updateMedicineValidations, validator, updateMedicine)
