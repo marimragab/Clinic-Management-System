@@ -51,6 +51,7 @@ const schema = new mongoose.Schema(
   { _id: false }
 );
 
-schema.plugin(AutoIncrement, { id: "employee" });
+schema.plugin(AutoIncrement,{id:"employee"});
 
-mongoose.model("employees", schema);
+mongoose.model("employees",schema)
+
