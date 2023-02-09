@@ -28,6 +28,9 @@ const addAppointmentValidations = [
     .withMessage("Appointment type is required")
     .isIn(["Home-Visit", "On-site"])
     .withMessage("Appointment type must be one of Home-Visit, On-site"),
+    body("PaymentMethod")
+    .isIn(["Cash", "Credit Card"])
+    .withMessage("PaymentMethod is required")
 ];
 
 const updateAppointmentValidations = [
@@ -61,6 +64,10 @@ const updateAppointmentValidations = [
     .withMessage("Appointment type is required")
     .isIn(["Home-Visit", "On-site"])
     .withMessage("Appointment type must be one of Home-Visit, On-site")
+    .optional(),
+    body("PaymentMethod")
+    .isIn(["Cash", "Credit Card"])
+    .withMessage("PaymentMethod is required")
     .optional(),
 ];
 

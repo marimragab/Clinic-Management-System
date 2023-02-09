@@ -77,8 +77,11 @@ const addNewAppointment = async (request, response, next) => {
     date,
     time,
     appointmentType,
+    paymentMethod
   });
   newAppointment
+  //if(newAppointment.paymentMethod ='credit card')
+      //open("/Controllers/payment.js")
     .save()
     .then((data) => {
       sendEmail(
