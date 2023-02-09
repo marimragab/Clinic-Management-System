@@ -16,15 +16,8 @@ let postValidation = [
     .withMessage("Not avaliable roll"),
 
   body("email").isEmail().withMessage("enter valid email"),
-
-<<<<<<< HEAD
-  body("password")
-    .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/, "i")
-=======
-    body("email").isEmail().withMessage("enter valid email"),
     
     body("password").matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/)
->>>>>>> Eman-Employee
     .withMessage("please insert valid password"),
 ];
 

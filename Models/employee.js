@@ -28,30 +28,6 @@ const schema = new mongoose.Schema(
     address: {
       type: addressschema,
     },
-<<<<<<< HEAD
-    roll: {
-      type: String,
-      required: true,
-      enum: ["receptionist", "Accountant", "pharmaceutical", "nurse"],
-    },
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-      RegExp: [
-        "/^w+([.-]?w+)*@w+([.-]?w+)*(.w{2,3})+$/",
-        "Please fill a valid email address",
-      ],
-    },
-    password: {
-      type: String,
-      RegExp: ["/^(?=.*d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/", "i"],
-      required: true,
-    },
-  },
-  { _id: false }
-);
-=======
     roll:{
         type:String,
         required:true,
@@ -74,12 +50,5 @@ const schema = new mongoose.Schema(
 
 schema.plugin(AutoIncrement,{id:"employee"});
 
-mongoose.model("employee",schema)
+mongoose.model("employees",schema)
 
-
-
->>>>>>> Eman-Employee
-
-schema.plugin(AutoIncrement, { id: "employee" });
-
-mongoose.model("employees", schema);

@@ -16,6 +16,8 @@ const invoiceRoute = require("./Routes/invoice");
 const reportsRoute=require("./Routes/report")
 // const authRoute = require("./Controllers/authentication");
 // const authenticationMW = require("./Middlewares/authenticationMW");
+var Publishable_Key = 'pk_test_F5UFRY9RCYM7ilRTAh55JQ'
+var Secret_Key = 'sk_test_Czcmd6nNU3PU0SUJkgt3tY'
 
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger.json");
