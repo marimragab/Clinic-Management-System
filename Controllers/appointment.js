@@ -1,9 +1,11 @@
 const mongoose = require("mongoose");
 const Appointment = require("../Models/appointment");
-const Patient = require("../Models/patient");
+require("./../Models/patient");
+const Patient = mongoose.model("patients");
 const Doctor = require("../Models/doctor");
 const filerResults = require("./../utils/filterAndSort");
 const { sendEmail } = require("./../utils/email");
+const appointment = require("../Models/appointment");
 
 //! No need for get all appointment on general, you need:
 //? Get specific doctor appointments on specific day (doctor only,admin)
@@ -28,7 +30,9 @@ const getSpecificDoctorAppointmentsOnDay = async (request, response, next) => {
       date: day,
     });
     // if (doctorAppointments)
-    response.status(200).json(doctorAppointments);
+    response
+      .status(200)
+      .json({ count: doctorAppointments.length, doctorAppointments });
     // else
     //   response
     //     .status(200)
@@ -61,34 +65,101 @@ const getAllAppointmentsOnSpecificDay = async (request, response, next) => {
 //! Finally we save the appointment data on the database
 const addNewAppointment = async (request, response, next) => {
   let { patient, doctor, date, time, appointmentType } = request.body;
-  // let isPatient = await Patient.findOne({ _id: patient });
-  // let isDoctor = await Doctor.findOne({ _id: doctor });
-  //! the date of the appointment must be the date of current day if its suitable or the after that
-  if (!isValidDate(date)) {
-    let error = new Error(
-      "Unvalid date, you should provide date after or equal today"
-    );
-    next(error);
-  } else {
-  let newAppointment = new Appointment({
-    patient,
-    doctor,
-    date,
-    time,
-    appointmentType,
-  });
-  newAppointment
-    .save()
-    .then((data) => {
-      sendEmail(
-        "mariamragab01@gmail.com",
-        "New Appointment Assigned",
-        "<h1>Hello Mariam</h1>"
+  try {
+    let isPatient = await Patient.findOne({ _id: patient });
+    let isDoctor = await Doctor.findOne({ _id: doctor }).populate({
+      path: "appointment",
+      select: "date time",
+    });
+    //! the date of the appointment must be the date of current day if its suitable or the after that
+    if (!isPatient) {
+      throw new Error("No patient with provided id");
+    } else if (!isDoctor) {
+      throw new Error("No Doctor with provided id");
+    } else if (!isValidDate(date)) {
+      throw new Error(
+        "Unvalid date, you should provide date after or equal today"
       );
-      response.status(200).json(data);
-    })
-    .catch((error) => next(error));
+    } else {
+      const doctorAppointments = isDoctor.appointment;
+      //console.log(doctorAppointments);
+      //Get doctor appointments on selected day
+      let appointmentsAtSelectedDate = doctorAppointments.filter(
+        (appointment) => appointment.date == date
+      );
+      console.log(appointmentsAtSelectedDate);
+      // If there are appointments on that day, then we check if the time selected available or not
+      if (appointmentsAtSelectedDate.length > 0) {
+        let unavailableTimes = appointmentsAtSelectedDate.map(
+          (appointment) => appointment.time
+        );
+        // console.log(unavailableTimes);
+        // console.log(unavailableTimes.includes(time));
+        //if present appointments times includes the choosed time then this day is not available
+        if (unavailableTimes.includes(time)) {
+          throw new Error("Sorry,but you can't book appointment at that date");
+        } else {
+          let newAppointment = new Appointment({
+            patient,
+            doctor,
+            date,
+            time,
+            appointmentType,
+          });
+          await newAppointment.save();
+          isDoctor.appointment.push(newAppointment._id);
+          await isDoctor.save();
+          sendEmail(
+            isDoctor.email,
+            "New Appointment Assigned",
+            `<h1>Hello ${isDoctor.name},</h1><p>Hope all is well ...</p><p>We send email that email to you to notify you with your new appointment</p><p>Appointment Details are detailed below:</p><h3>Appointment Date: ${newAppointment.date}</h3><h3>Appointment Time: ${newAppointment.time}</h3><h3>Appointment Type: ${newAppointment.appointmentType}</h3>`
+          );
+          response.status(200).json({
+            message: "Appointment added successfully",
+            id: newAppointment._id,
+          });
+        }
+      } else {
+        // if there is no appointments at that day,so add the new appointment to the doctor and to the appointment collection
+        let newAppointment = new Appointment({
+          patient,
+          doctor,
+          date,
+          time,
+          appointmentType,
+        });
+        await newAppointment.save();
+        isDoctor.appointment.push(newAppointment._id);
+        //await Doctor.findOneAndUpdate({_id:doctor},{$push: { appointment:newAppointment._id  }})
+        await isDoctor.save();
+        sendEmail(
+          "mariam.relshafei@yahoo.com",
+          "New Appointment Assigned",
+          `<h1>Hello ${isDoctor.name},</h1><p>Hope all is well ...</p><p>We send email that email to you to notify you with your new appointment</p><p>Appointment Details are detailed below:</p><h3>Appointment Date: ${newAppointment.date}</h3><h3>Appointment Time: ${newAppointment.time}</h3><h3>Appointment Type: ${newAppointment.appointmentType}</h3>`
+        );
+        response.status(200).json({
+          message: "Appointment added successfully",
+          id: newAppointment._id,
+        });
+      }
+    }
+  } catch (error) {
+    next(error);
   }
+  // let newAppointment = new Appointment({
+  //   patient,
+  //   doctor,
+  //   date,
+  //   time,
+  //   appointmentType,
+  // });
+  // newAppointment
+  //   .save()
+  //   .then((data) => {
+  //
+  //     response.status(200).json(data);
+  //   })
+  //   .catch((error) => next(error));
 };
 
 //! update only the specific value user want to update
@@ -142,7 +213,7 @@ const deleteAppointment = (request, response, next) => {
 };
 
 function isValidDate(date) {
-  let today = new Date().toISOString().split('T')[0];
+  let today = new Date().toISOString().split("T")[0];
   return date >= today;
 }
 

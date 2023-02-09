@@ -10,7 +10,7 @@ const doctorSchema = new mongoose.Schema(
     specialization: {type: String, required: true},
     appointment: [{
       type: Number,
-      ref: "appointment"
+      ref: "appointments"
     }]
   },{_id:false}
 );
