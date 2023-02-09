@@ -4,6 +4,8 @@ const {
   getAllInvoices,
   addNewInvoice,
   updateInvoice,
+  deleteInvoice,
+  getSpecificInvoice
 } = require("../Controllers/invoice");
 
 const validator = require("./../Middlewares/validationMW");
@@ -11,7 +13,7 @@ const validator = require("./../Middlewares/validationMW");
 const {
   addInvoiceValidations,
   updateInvoiceValidations,
-  deleteInvoiceValidations,
+  idParamInvoiceValidations 
 } = require("./../Validations/invoice");
 
 const {
@@ -28,4 +30,8 @@ router
   .post(addInvoiceValidations, validator, addNewInvoice)
   .patch(updateInvoiceValidations, validator, updateInvoice);
 
+router
+  .route("/invoice/:id")
+  .get( idParamInvoiceValidations ,validator,getSpecificInvoice)
+  .delete( idParamInvoiceValidations , validator, deleteInvoice);
 module.exports = router;

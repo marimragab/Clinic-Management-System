@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const Invoice = require("../Models/invoice");
+require("./../Models/clinicServices");
+const ClinicServices = mongoose.model("clinicServices");
 const filerResults = require("./../utils/filterAndSort");
 
 const getAllInvoices = async (request, response, next) => {
@@ -11,27 +13,81 @@ const getAllInvoices = async (request, response, next) => {
   }
 };
 
+const getSpecificInvoice=async(request,response,next)=>{
+  try{
+    let invoice=await Invoice.findById({_id:request.params.id})
+    if(!invoice) throw new Error("No Invoice With provided id")
+    else
+    response.status(200).json(invoice)
+  }
+  catch(error){
+    next(error)
+  }
+}
+
 const addNewInvoice = async (request, response, next) => {
-  const { patient, employee, date, servedServices } = request.body;
-  let newInvoice = new Invoice({
-    _id: mongoose.Types.ObjectId(),
-    patient,
-    employee,
-    date,
-    servedServices,
-  });
-  newInvoice
-    .save()
-    .then((data) => {
-      response.status(201).json({ message: "Invoice Added", id: data._id });
-    })
-    .catch((error) => next(error));
+  try {
+    const {
+      patient,
+      employee,
+      servedServices,
+      medicines,
+      paymentMethod,
+    } = request.body;
+
+    let total = 0;
+    let allClinicServices = await ClinicServices.find();
+    console.log(allClinicServices);
+
+    servedServices.forEach((service) => {
+      let serviceData = allClinicServices.find(
+        (servicedata) => servicedata._id == service.serviceinfo
+      );
+      console.log("service", serviceData);
+      console.log(serviceData.price * service.count);
+      total += Number(serviceData.price) * Number(service.count);
+    });
+
+    
+    console.log(total);
+    console.log(servedServices);
+    let newInvoice = new Invoice({
+      patient,
+      employee,
+      servedServices,
+      medicines,
+      paymentMethod,
+      total,
+      date: new Date().toISOString().split('T')[0],
+    });
+    await newInvoice.save();
+    response
+      .status(201)
+      .json({ message: "Invoice Added", id: newInvoice._id});
+  } catch (error) {
+    next(error);
+  }
 };
 
-const updateInvoice = async (request, response, next) => {};
+const updateInvoice = async (request, response, next) => {
+
+};
+
+const deleteInvoice = async (request, response, next) => {
+  try{
+  await Invoice.findByIdAndRemove({_id:request.params.id})
+  response.status(200).json({message:"deleted",id:request.params.id})
+  }
+  catch(error){
+    next(error)
+  }
+};
+
 
 module.exports = {
   getAllInvoices,
+  getSpecificInvoice,
   addNewInvoice,
   updateInvoice,
+  deleteInvoice
 };
