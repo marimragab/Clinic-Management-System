@@ -6,7 +6,18 @@ const { request } = require("express");
 const servicesSchema=mongoose.model("clinicServices")
 
 exports.getAllServices=(request,response,next)=>{
-    servicesSchema.find()
+    let query={}
+    //filter by name
+    if(request.query.name){
+        query.name=request.query.name
+    }
+    servicesSchema.find(query)
+    .populate('name')
+    //sort by name
+    .skip(0)
+    .limit(5)
+    .sort({name : 1})
+    //servicesSchema.find()
     .then((data)=>{
         response.status(200).json(data)
     })
