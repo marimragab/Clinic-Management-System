@@ -97,5 +97,5 @@ module.exports = {
   getAllInvoices,
   getSpecificInvoice,
   addNewInvoice,
-  updateInvoice,
+  deleteInvoice 
 };
