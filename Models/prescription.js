@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const AutoIncrement = require('mongoose-sequence')(mongoose)
+const AutoIncrement = require("mongoose-sequence")(mongoose);
 
 const prescriptionSchema = new mongoose.Schema(
   {
@@ -62,8 +62,9 @@ const prescriptionSchema = new mongoose.Schema(
       },
     },
   },
-  { timestamps: true },{_id:Number}
+  { timestamps: true },
+  { _id: Number }
 );
 
-prescriptionSchema.plugin(AutoIncrement,{id:"prescription"});
+prescriptionSchema.plugin(AutoIncrement, { id: "prescription" });
 module.exports = mongoose.model("prescriptions", prescriptionSchema);

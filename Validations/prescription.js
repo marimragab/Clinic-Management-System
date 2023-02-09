@@ -1,4 +1,9 @@
 const { param, body, query } = require("express-validator");
+const mongoose=require('mongoose')
+const Medicine = require("./../Models/medicine");
+const Doctor = require("./../Models/doctor");
+require("./../Models/patient");
+const Patient = mongoose.model("patients");
 
 const addPrescriptionValidations = [
   body("patient")
@@ -11,13 +16,6 @@ const addPrescriptionValidations = [
     .withMessage("Doctor id is required")
     .isInt()
     .withMessage("Doctor id must be number"),
-  // body("date")
-  //   .notEmpty()
-  //   .withMessage("Prescription Date is required")
-  //   .isDate()
-  //   .withMessage(
-  //     "Prescription Date must be a valid date on format YYYY/MM/DD or YYYY-MM-DD"
-  //   ),
   body("medicines")
     .notEmpty()
     .withMessage("Prescription medicines array is required")
@@ -29,7 +27,13 @@ const addPrescriptionValidations = [
     .notEmpty()
     .withMessage("Prescription medicine info  is required")
     .isInt()
-    .withMessage("Prescription medicine info must be number"),
+    .withMessage("Prescription medicine info must be number")
+    .custom(async (value) => {
+      const medicine = await Medicine.findOne({ _id: value });
+      if (!medicine) {
+        throw new Error("There is no medicine with entered id");
+      }
+    }),
   body("medicines.*.dose")
     .notEmpty()
     .withMessage("Prescription medicine dose is required")
@@ -73,6 +77,12 @@ const updatePrescriptionValidations = [
     .withMessage("Prescription medicine info  is required")
     .isInt()
     .withMessage("Prescription medicine info must be number")
+    .custom(async (value) => {
+      const medicine = await Medicine.findOne({ _id: value });
+      if (!medicine) {
+        throw new Error("There is no medicine with entered id");
+      }
+    })
     .optional(),
   body("medicines.*.dose")
     .notEmpty()
@@ -102,7 +112,13 @@ const getDoctorPrescriptionOnDayValidations = [
     .notEmpty()
     .withMessage("Doctor id is required")
     .isInt()
-    .withMessage("Doctor id must be number"),
+    .withMessage("Doctor id must be number")
+    .custom(async (value) => {
+      const doctor = await Doctor.findOne({ _id: value });
+      if (!doctor) {
+        throw new Error("There is no doctor with provided id");
+      }
+    }),
   param("day")
     .notEmpty()
     .withMessage("Date is required")
@@ -112,9 +128,51 @@ const getDoctorPrescriptionOnDayValidations = [
     ),
 ];
 
+
+const getSpecificPatientPrescriptionsValidations = [
+  param("patient")
+    .notEmpty()
+    .withMessage("Doctor id is required")
+    .isInt()
+    .withMessage("Doctor id must be number")
+    .custom(async (value) => {
+      const ispatient = await Patient.findOne({ _id: value });
+      if (!ispatient) {
+        throw new Error("There is no patient with provided id");
+      }
+    })
+]
+
+const getSpecificPatientPrescriptionsForSpecificDoctorValidations = [
+  param("patient")
+    .notEmpty()
+    .withMessage("Doctor id is required")
+    .isInt()
+    .withMessage("Doctor id must be number")
+    .custom(async (value) => {
+      const ispatient = await Patient.findOne({ _id: value });
+      if (!ispatient) {
+        throw new Error("There is no patient with provided id");
+      }
+    }),
+  param("doctor")
+    .notEmpty()
+    .withMessage("Doctor id is required")
+    .isInt()
+    .withMessage("Doctor id must be number")
+    .custom(async (value) => {
+      const isdoctor = await Doctor.findOne({ _id: value });
+      if (!isdoctor) {
+        throw new Error("There is no doctor with provided id");
+      }
+    }),
+];
+
 module.exports = {
   addPrescriptionValidations,
   updatePrescriptionValidations,
   deletePrescriptionValidations,
   getDoctorPrescriptionOnDayValidations,
+  getSpecificPatientPrescriptionsForSpecificDoctorValidations,
+  getSpecificPatientPrescriptionsValidations
 };

@@ -5,6 +5,8 @@ const {
   getDoctorPrescriptionOnDayValidations,
   updatePrescriptionValidations,
   deletePrescriptionValidations,
+  getSpecificPatientPrescriptionsForSpecificDoctorValidations,
+  getSpecificPatientPrescriptionsValidations,
 } = require("./../Validations/prescription");
 
 const validator = require("./../Middlewares/validationMW");
@@ -24,11 +26,18 @@ router
   .get(getAllPrescriptions)
   .post(addPrescriptionValidations, validator, addNewPrescription)
   .patch(updatePrescriptionValidations, validator, updatePrescription)
-  .delete(deletePrescription);
+  .delete(deletePrescriptionValidations, validator, deletePrescription);
 
-router.get("/prescription/:patient", getSpecificPatientPrescriptions);
+router.get(
+  "/prescription/:patient",
+  getSpecificPatientPrescriptionsValidations,
+  validator,
+  getSpecificPatientPrescriptions
+);
 router.get(
   "/prescription/:patient/:doctor",
+  getSpecificPatientPrescriptionsForSpecificDoctorValidations,
+  validator,
   getSpecificPatientPrescriptionsForSpecificDoctor
 );
 
