@@ -4,13 +4,13 @@ const addPrescriptionValidations = [
   body("patient")
     .notEmpty()
     .withMessage("Patient id is required")
-    .isMongoId()
-    .withMessage("Patient id must be objectId"),
+    .isInt()
+    .withMessage("Patient id must be number"),
   body("doctor")
     .notEmpty()
     .withMessage("Doctor id is required")
-    .isMongoId()
-    .withMessage("Doctor id must be objectId"),
+    .isInt()
+    .withMessage("Doctor id must be number"),
   // body("date")
   //   .notEmpty()
   //   .withMessage("Prescription Date is required")
@@ -28,8 +28,8 @@ const addPrescriptionValidations = [
   body("medicines.*.info")
     .notEmpty()
     .withMessage("Prescription medicine info  is required")
-    .isMongoId()
-    .withMessage("Prescription medicine info must be objectId"),
+    .isInt()
+    .withMessage("Prescription medicine info must be number"),
   body("medicines.*.dose")
     .notEmpty()
     .withMessage("Prescription medicine dose is required")
@@ -48,19 +48,19 @@ const updatePrescriptionValidations = [
   body("id")
     .notEmpty()
     .withMessage("Prescription id is required")
-    .isMongoId()
-    .withMessage("Prescription id must be objectId"),
+    .isInt()
+    .withMessage("Prescription id must be number"),
   body("patient")
     .notEmpty()
     .withMessage("Patient id is required")
-    .isMongoId()
-    .withMessage("Patient id must be objectId")
+    .isInt()
+    .withMessage("Patient id must be number")
     .optional(),
   body("doctor")
     .notEmpty()
     .withMessage("Doctor id is required")
-    .isMongoId()
-    .withMessage("Doctor id must be objectId")
+    .isInt()
+    .withMessage("Doctor id must be number")
     .optional(),
   body("medicines")
     .notEmpty()
@@ -71,8 +71,8 @@ const updatePrescriptionValidations = [
   body("medicines.*.info")
     .notEmpty()
     .withMessage("Prescription medicine info  is required")
-    .isMongoId()
-    .withMessage("Prescription medicine info must be objectId")
+    .isInt()
+    .withMessage("Prescription medicine info must be number")
     .optional(),
   body("medicines.*.dose")
     .notEmpty()
@@ -93,16 +93,16 @@ const deletePrescriptionValidations = [
   body("id")
     .notEmpty()
     .withMessage("Prescription id is required")
-    .isMongoId()
-    .withMessage("Prescription id must be objectId"),
+    .isInt()
+    .withMessage("Prescription id must be number"),
 ];
 
 const getDoctorPrescriptionOnDayValidations = [
   param("doctor")
     .notEmpty()
     .withMessage("Doctor id is required")
-    .isMongoId()
-    .withMessage("Doctor id must be objectId"),
+    .isInt()
+    .withMessage("Doctor id must be number"),
   param("day")
     .notEmpty()
     .withMessage("Date is required")

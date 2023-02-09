@@ -15,17 +15,11 @@ const getAllPrescriptions = (request, response, next) => {
 const addNewPrescription = (request, response, next) => {
   const { patient, doctor, medicines, followup } = request.body;
   let newPrescription = new Prescription({
-    _id: mongoose.Types.ObjectId(),
     patient,
     doctor,
     medicines,
     followup,
-    date: new Date()
-      .toLocaleDateString()
-      .replaceAll("/", "-")
-      .split("-")
-      .reverse()
-      .join("-"),
+    date: new Date().toISOString().split('T')[0],
   });
   newPrescription
     .save()

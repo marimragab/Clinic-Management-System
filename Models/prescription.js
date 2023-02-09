@@ -1,17 +1,18 @@
 const mongoose = require("mongoose");
+const AutoIncrement = require('mongoose-sequence')(mongoose)
 
 const prescriptionSchema = new mongoose.Schema(
   {
-    _id: mongoose.Types.ObjectId,
+    _id: Number,
     patient: {
-      type: mongoose.Types.ObjectId,
+      type: Number,
       required: [true, "You Should provide patient data"],
-      // ref: "",
+      ref: "patients",
     },
     doctor: {
-      type: mongoose.Types.ObjectId,
+      type: Number,
       required: [true, "You Should provide doctor data"],
-      // ref: "",
+      ref: "doctors",
     },
     date: {
       type: String,
@@ -33,8 +34,8 @@ const prescriptionSchema = new mongoose.Schema(
     medicines: [
       {
         info: {
-          type: mongoose.Types.ObjectId,
-          ref: "",
+          type: Number,
+          ref: "medicines",
           required: [true, "You Should provide medicine data"],
         },
         dose: {
@@ -61,7 +62,8 @@ const prescriptionSchema = new mongoose.Schema(
       },
     },
   },
-  { timestamps: true }
+  { timestamps: true },{_id:Number}
 );
 
+prescriptionSchema.plugin(AutoIncrement,{id:"prescription"});
 module.exports = mongoose.model("prescriptions", prescriptionSchema);
