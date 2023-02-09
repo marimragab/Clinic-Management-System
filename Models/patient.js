@@ -31,6 +31,5 @@ const schema = new mongoose.Schema({
 
 
 
-
 schema.plugin(AutoIncrement,{id:"patient"});
-mongoose.model("patient",schema)
+mongoose.model("patients",schema)

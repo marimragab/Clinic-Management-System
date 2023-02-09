@@ -2,7 +2,7 @@
 const mongoose=require("mongoose");
 const bcrypt=require("bcrypt")
 require("./../Models/patient")
-const patientSchema = mongoose.model("patient")
+const patientSchema = mongoose.model("patients")
 
 exports.getAllPatients = (request,response,next)=>{
     patientSchema.find()

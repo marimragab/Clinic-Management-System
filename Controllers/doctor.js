@@ -1,5 +1,6 @@
 const { request } = require("express");
 const mongoose = require("mongoose");
+const bcrypt=require("bcrypt")
 const doctorSchema = require("../Models/doctor");
 
 const getAllDoctors = (request, response, next) => {
@@ -11,8 +12,9 @@ const getAllDoctors = (request, response, next) => {
 };
 
 const addNewDoctor = (request, response, next) => {
+  // const salt = await bcrypt.genSalt(10);
+  // const hashedPassword = await bcrypt.hash(request.body.password, salt);
   let newDoctor = new doctorSchema({
-    _id: mongoose.Types.ObjectId(),
     name: request.body.name,
     specialization: request.body.specialization,
     appointment: request.body.appointment,
