@@ -1,5 +1,5 @@
 const { param, body, query } = require("express-validator");
-const mongoose=require('mongoose')
+const mongoose = require("mongoose");
 const Medicine = require("./../Models/medicine");
 const Doctor = require("./../Models/doctor");
 require("./../Models/patient");
@@ -128,7 +128,6 @@ const getDoctorPrescriptionOnDayValidations = [
     ),
 ];
 
-
 const getSpecificPatientPrescriptionsValidations = [
   param("patient")
     .notEmpty()
@@ -140,8 +139,8 @@ const getSpecificPatientPrescriptionsValidations = [
       if (!ispatient) {
         throw new Error("There is no patient with provided id");
       }
-    })
-]
+    }),
+];
 
 const getSpecificPatientPrescriptionsForSpecificDoctorValidations = [
   param("patient")
@@ -174,5 +173,5 @@ module.exports = {
   deletePrescriptionValidations,
   getDoctorPrescriptionOnDayValidations,
   getSpecificPatientPrescriptionsForSpecificDoctorValidations,
-  getSpecificPatientPrescriptionsValidations
+  getSpecificPatientPrescriptionsValidations,
 };

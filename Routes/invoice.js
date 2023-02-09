@@ -27,8 +27,7 @@ router
   .route("/invoice")
   .all(isAccountant)
   .get(getAllInvoices)
-  .post(addInvoiceValidations, validator, addNewInvoice)
-  .patch(updateInvoiceValidations, validator, updateInvoice);
+  .post(addInvoiceValidations, validator, addNewInvoice);
 
 router
   .route("/invoice/:id")

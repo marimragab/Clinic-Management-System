@@ -23,10 +23,24 @@ const router = express.Router();
 
 router
   .route("/appointment")
-  .get(isReceptionist,getAllAppointments)
-  .post(addAppointmentValidations, validator,isReceptionistOrPatient, addNewAppointment)
-  .patch(updateAppointmentValidations, validator,isReceptionistOrPatient, updateAppointment)
-  .delete(deleteAppointmentValidations, validator,isReceptionistOrPatient ,deleteAppointment);
-
+  .get(isReceptionist, getAllAppointments)
+  .post(
+    addAppointmentValidations,
+    validator,
+    isReceptionistOrPatient,
+    addNewAppointment
+  )
+  .patch(
+    updateAppointmentValidations,
+    validator,
+    isReceptionistOrPatient,
+    updateAppointment
+  )
+  .delete(
+    deleteAppointmentValidations,
+    validator,
+    isReceptionistOrPatient,
+    deleteAppointment
+  );
 
 module.exports = router;

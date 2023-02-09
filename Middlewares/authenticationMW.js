@@ -25,7 +25,7 @@ module.exports.isReceptionist = (request, response, next) => {
   }
 };
 
-module.exports.isAdmin= (request, response, next) => {
+module.exports.isAdmin = (request, response, next) => {
   if (request.role == "Admin") {
     next();
   } else {
@@ -75,7 +75,6 @@ module.exports.isDoctor = (request, response, next) => {
   }
 };
 
-
 module.exports.isReceptionistOrDoctorOrNurse = (request, response, next) => {
   if (
     request.role == "doctor" ||
@@ -91,11 +90,7 @@ module.exports.isReceptionistOrDoctorOrNurse = (request, response, next) => {
 };
 
 module.exports.isReceptionistOrPatient = (request, response, next) => {
-  if (
-    request.role == "patient" ||
-    request.role == "receptionist" 
-    
-  ) {
+  if (request.role == "patient" || request.role == "receptionist") {
     next();
   } else {
     let error = new Error("Not Authorized");
@@ -104,7 +99,11 @@ module.exports.isReceptionistOrPatient = (request, response, next) => {
   }
 };
 
-module.exports.isReceptionistOrAccountantOrAdmin = (request, response, next) => {
+module.exports.isReceptionistOrAccountantOrAdmin = (
+  request,
+  response,
+  next
+) => {
   if (
     request.role == "receptionist" ||
     request.role == "Accountant" ||
@@ -118,12 +117,16 @@ module.exports.isReceptionistOrAccountantOrAdmin = (request, response, next) => 
   }
 };
 
-module.exports.isReceptionistOrPatientOrAccountantOrAdmin = (request, response, next) => {
+module.exports.isReceptionistOrPatientOrAccountantOrAdmin = (
+  request,
+  response,
+  next
+) => {
   if (
     request.role == "patient" ||
     request.role == "receptionist" ||
     request.role == "Accountant" ||
-    request.role == "Admin" 
+    request.role == "Admin"
   ) {
     next();
   } else {

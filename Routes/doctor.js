@@ -14,7 +14,7 @@ const {
 
 const {
   isAdmin,
-  isReceptionistOrAccountantOrAdmin ,
+  isReceptionistOrAccountantOrAdmin,
 } = require("./../Middlewares/authenticationMW");
 
 const router = express.Router();

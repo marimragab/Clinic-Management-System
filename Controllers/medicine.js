@@ -26,16 +26,6 @@ const addNewMedicine = (request, response, next) => {
     .catch((error) => next(error));
 };
 
-//   const updateMedicine = (request, response, next) => {
-//     Appointment.findOne({ _id: request.body.id })
-//       .then((appointment) => {
-//         response.status(200).json(appointment);
-//       })
-//       .catch((error) => next(error));
-//   };
-//   medicin
-//   id // name //amount // price // description
-
 const updateMedicine = (request, response, next) => {
   Medicine.updateOne(
     {
@@ -57,6 +47,7 @@ const updateMedicine = (request, response, next) => {
     })
     .catch((error) => next(error));
 };
+
 const deleteMedicine = (request, response, next) => {
   Medicine.deleteOne({ _id: request.body.id })
     .then((data) => {

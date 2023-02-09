@@ -11,10 +11,11 @@ const login = async (request, response, next) => {
   try {
     const { email, password } = request.body;
     const employee = await Employee.findOne({ email });
+    console.log("employee", employee);
     const patient = await Patient.findOne({ email });
     const doctor = await Doctor.findOne({ email });
-
-    if (employee ) {
+    console.log(employee);
+    if (employee && (await bcrypt.compare(password, employee.password))) {
       const token = generateToken(employee._id, employee.roll);
       response.status(200).json({
         employeeId: employee._id,
@@ -33,10 +34,10 @@ const login = async (request, response, next) => {
         token,
       });
     } else {
-      // let error = new Error("Not Authenticated ");
-      // error.status = 401;
-      // next(error);
-      next()
+      let error = new Error("Not Authenticated ");
+      error.status = 401;
+      next(error);
+      // next()
     }
   } catch (error) {
     next(error);

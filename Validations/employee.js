@@ -11,13 +11,14 @@ let postValidation = [
   body("address.building").isInt(),
 
   body("roll")
-    .isIn(["Admin","receptionist", "Accountant", "pharmaceutical", "nurse"])
+    .isIn(["Admin", "receptionist", "Accountant", "pharmaceutical", "nurse"])
     .isAlpha()
     .withMessage("Not avaliable roll"),
 
   body("email").isEmail().withMessage("enter valid email"),
-    
-    body("password").matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/)
+
+  body("password")
+    .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/)
     .withMessage("please insert valid password"),
 ];
 
@@ -30,7 +31,7 @@ let patchValidation = [
   body("address.street").isAlpha().optional(),
   body("address.building").isInt().optional(),
   body("roll")
-    .isIn(["Admin","receptionist", "Accountant", "pharmaceutical"])
+    .isIn(["Admin", "receptionist", "Accountant", "pharmaceutical"])
     .isAlpha()
     .optional(),
   body("email").isEmail().optional(),

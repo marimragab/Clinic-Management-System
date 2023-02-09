@@ -1,137 +1,118 @@
 {
-        "swagger": "2.0",
-        "info": {
-            "version": "1.0.0",
-            "title": "Bright Smile Clinic API Documentation",
-            "description": "Our Bright Smile Clinic Project Application API",
-            "license": {
-                "name": "MIT",
-                "url": "https://opensource.org/licenses/MIT"
-            },
-            "contact": {
-                "name": "Bright Smile Clinic",
-                "email": "bright.simle.care@gmail.com"
-            },
-            "servers": [
-                {
-                    "url": "https://localhost:8080",
-                    "description": "Local server"
-                }
-            ],
-            "schemes": [
-                "http"
-            ],
-            "consumes": [
-                "application/json"
-            ],
-            "produces": [
-                "application/json"
-            ]
-        },
-        "tags": [
-            {
-                "name": "Doctors",
-                "description": "API for Doctors EndPoints"
-            },
-            {
-                "name": "Patients",
-                "description": "API for Patients EndPoints"
-            },
-            {
-                "name": "Employees",
-                "description": "API for Employees EndPoints"
-            },
-            {
-                "name": "Medicines",
-                "description": "API for Medicines EndPoints"
-            },
-            {
-                "name": "Clinic Services",
-                "description": "API for Clinic Services EndPoints"
-            },
-            {
-                "name": "Appointments",
-                "description": "API for Appointments EndPoints"
-            },
-            {
-                "name": "Prescriptions",
-                "description": "API for Prescriptions EndPoints"
-            },
-            {
-                "name": "Invoices",
-                "description": "API for Invoices EndPoints"
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Bright Smile Clinic API Documentation",
+    "description": "Our Bright Smile Clinic Project Application API",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    },
+    "contact": {
+      "name": "Bright Smile Clinic",
+      "email": "bright.simle.care@gmail.com"
+    },
+    "servers": [
+      {
+        "url": "https://localhost:8080",
+        "description": "Local server"
+      }
+    ],
+    "schemes": ["http"],
+    "consumes": ["application/json"],
+    "produces": ["application/json"]
+  },
+  "tags": [
+    {
+      "name": "Doctors",
+      "description": "API for Doctors EndPoints"
+    },
+    {
+      "name": "Patients",
+      "description": "API for Patients EndPoints"
+    },
+    {
+      "name": "Employees",
+      "description": "API for Employees EndPoints"
+    },
+    {
+      "name": "Medicines",
+      "description": "API for Medicines EndPoints"
+    },
+    {
+      "name": "Clinic Services",
+      "description": "API for Clinic Services EndPoints"
+    },
+    {
+      "name": "Appointments",
+      "description": "API for Appointments EndPoints"
+    },
+    {
+      "name": "Prescriptions",
+      "description": "API for Prescriptions EndPoints"
+    },
+    {
+      "name": "Invoices",
+      "description": "API for Invoices EndPoints"
+    }
+  ],
+  "paths": {
+    "/appointment": {
+      "get": {
+        "tags": ["Appointments"],
+        "summary": "Get array of appointments",
+
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "$ref": "#/definitions/Appointment"
             }
-        ],
-        "paths": {
-            "/appointment": {
-                "get": {
-                    "tags": [
-                        "Appointments"
-                    ],
-                    "summary": "Get array of appointments",
-    
-                    "responses": {
-                        "200": {
-                            "description": "Success",
-                            "schema": {
-                                "type": "array",
-                                "$ref": "#/definitions/Appointment"
-                            }
-                        }
-                    }
-                },
-                "post": {
-                    "tags": [
-                        "Appointments"
-                    ],
-                    "summary": "Adding new appointment",
-                    "parameters": [
-                        {
-                            "name": "appointment",
-                            "in": "body",
-                            "description": "Appointment data that we want to add",
-                            "schema": {
-                                "$ref": "#/definitions/Appointment"
-                            }
-                        }
-                    ],
-                    "responses": {
-                        "201": {
-                            "description": "New Appointment added successfully"
-                        }
-                    }
-                }
-            }
-        },
-        "definitions": {
-            "Appointment": {
-                "required": [
-                    "patient",
-                    "doctor",
-                    "date",
-                    "time",
-                    "appointmentType"
-                 
-                ],
-                "properties": {
-                    "patient": {
-                        "type": "objectId"
-                    },
-                    "doctor": {
-                        "type": "objectId"
-                    },
-                    "date":{
-                        "type":"String"
-                    },
-                    "time":{
-                        "type":"string"
-                    },
-                    "appointmentType":{
-                        "type":"enum"
-                    }
-                  
-                }
-            }
-       
+          }
         }
+      },
+      "post": {
+        "tags": ["Appointments"],
+        "summary": "Adding new appointment",
+        "parameters": [
+          {
+            "name": "appointment",
+            "in": "body",
+            "description": "Appointment data that we want to add",
+            "schema": {
+              "$ref": "#/definitions/Appointment"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "New Appointment added successfully"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Appointment": {
+      "required": ["patient", "doctor", "date", "time", "appointmentType"],
+      "properties": {
+        "patient": {
+          "type": "objectId"
+        },
+        "doctor": {
+          "type": "objectId"
+        },
+        "date": {
+          "type": "String"
+        },
+        "time": {
+          "type": "string"
+        },
+        "appointmentType": {
+          "type": "enum"
+        }
+      }
+    }
+  }
 }

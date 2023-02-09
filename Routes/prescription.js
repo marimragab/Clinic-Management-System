@@ -21,14 +21,21 @@ const {
 
 const router = express.Router();
 const {
- isPharmaceutical, isDoctor, isPatient,
+  isPharmaceutical,
+  isDoctor,
+  isPatient,
 } = require("./../Middlewares/authenticationMW");
 router
   .route("/prescription")
-  .get(isPharmaceutical,getAllPrescriptions)
-  .post(addPrescriptionValidations, validator,isDoctor, addNewPrescription)
-  .patch(updatePrescriptionValidations, validator, isDoctor,updatePrescription)
-  .delete(deletePrescriptionValidations, validator,isPharmaceutical ,deletePrescription);
+  .get(isPharmaceutical, getAllPrescriptions)
+  .post(addPrescriptionValidations, validator, isDoctor, addNewPrescription)
+  .patch(updatePrescriptionValidations, validator, isDoctor, updatePrescription)
+  .delete(
+    deletePrescriptionValidations,
+    validator,
+    isPharmaceutical,
+    deletePrescription
+  );
 
 router.get(
   "/prescription/:patient",

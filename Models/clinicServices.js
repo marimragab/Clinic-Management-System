@@ -1,28 +1,24 @@
-const mongoose=require("mongoose")
-const AutoIncrement = require('mongoose-sequence')(mongoose)
+const mongoose = require("mongoose");
+const AutoIncrement = require("mongoose-sequence")(mongoose);
 
-
-const schema=new mongoose.Schema({
-    _id:{
-        type:Number
+const schema = new mongoose.Schema(
+  {
+    _id: {
+      type: Number,
     },
-    name:{
-        type:String,
-        unique:true,
-        max:20
+    name: {
+      type: String,
+      unique: true,
+      max: 20,
     },
-    price:{
-        type:Number,
-        require:true,
-    }
+    price: {
+      type: Number,
+      require: true,
+    },
+  },
+  { _id: false }
+);
 
-},{ _id: false })
+schema.plugin(AutoIncrement, { id: "clinicServices" });
 
-schema.plugin(AutoIncrement,{id:"clinicServices"});
-
-mongoose.model("clinicServices",schema)
-
-
-
-
-
+mongoose.model("clinicServices", schema);

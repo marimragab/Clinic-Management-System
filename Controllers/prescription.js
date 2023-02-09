@@ -54,7 +54,9 @@ const getSpecificPatientPrescriptions = async (request, response, next) => {
     let patientPrescriptions = await Prescription.find({
       patient,
     });
-    response.status(200).json({count:patientPrescriptions.length,patientPrescriptions});
+    response
+      .status(200)
+      .json({ count: patientPrescriptions.length, patientPrescriptions });
   } catch (error) {
     next(error);
   }

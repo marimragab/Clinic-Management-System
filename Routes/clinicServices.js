@@ -7,18 +7,13 @@ const router = express.Router();
 
 const {
   isReceptionistOrPatientOrAccountantOrAdmin,
-  isAdmin
+  isAdmin,
 } = require("./../Middlewares/authenticationMW");
 
 router
   .route("/Services")
   .get(isReceptionistOrPatientOrAccountantOrAdmin, controller.getAllServices)
-  .post(
-    validation.postValidation,
-    validator,
-    isAdmin,
-    controller.addServices
-  )
+  .post(validation.postValidation, validator, isAdmin, controller.addServices)
   .patch(validation.patchValidation, isAdmin, controller.updateServices)
   .delete([body("_id").isInt()], isAdmin, controller.deleteServices);
 

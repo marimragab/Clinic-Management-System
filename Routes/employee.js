@@ -5,9 +5,7 @@ const { body, query, param, validationResult } = require("express-validator");
 const validator = require("./../Middlewares/validationMW");
 const router = express.Router();
 
-const {
-  isAdmin
-} = require("./../Middlewares/authenticationMW");
+const { isAdmin } = require("./../Middlewares/authenticationMW");
 
 router
   .route("/Employee")

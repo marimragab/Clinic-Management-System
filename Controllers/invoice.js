@@ -59,8 +59,8 @@ const addNewInvoice = async (request, response, next) => {
       });
     }
 
-    console.log(servedServices)
-    console.log(medicines)
+    console.log(servedServices);
+    console.log(medicines);
     console.log(total);
     let newInvoice = new Invoice({
       patient,
@@ -70,7 +70,12 @@ const addNewInvoice = async (request, response, next) => {
       paymentMethod,
       total,
       date: new Date().toISOString().split("T")[0],
-      time:new Date().toTimeString().split(" ")[0].split(":").splice(0,2).join(":")
+      time: new Date()
+        .toTimeString()
+        .split(" ")[0]
+        .split(":")
+        .splice(0, 2)
+        .join(":"),
     });
     await newInvoice.save();
     response.status(201).json({ message: "Invoice Added", id: newInvoice._id });
@@ -78,8 +83,6 @@ const addNewInvoice = async (request, response, next) => {
     next(error);
   }
 };
-
-const updateInvoice = async (request, response, next) => {};
 
 const deleteInvoice = async (request, response, next) => {
   try {
@@ -95,5 +98,4 @@ module.exports = {
   getSpecificInvoice,
   addNewInvoice,
   updateInvoice,
-  deleteInvoice,
 };

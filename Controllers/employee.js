@@ -10,21 +10,21 @@ const { request } = require("express");
 require("./../Models/employee");
 const employeeSchema = mongoose.model("employees");
 
-
-exports.getAllEmployees=(request,response,next)=>{
-    let query={}
-    //filter by fullName
-    if(request.query.fullName){
-        query.fullName=request.query.fullName
-    }
-    employeeSchema.find(query)
-    .populate('fullName')
+exports.getAllEmployees = (request, response, next) => {
+  let query = {};
+  //filter by fullName
+  if (request.query.fullName) {
+    query.fullName = request.query.fullName;
+  }
+  employeeSchema
+    .find(query)
+    .populate("fullName")
     //sort by fullName
     .skip(0)
     .limit(10)
-    .sort({fullName : 1})
-    .then((data)=>{
-        response.status(200).json(data)
+    .sort({ fullName: 1 })
+    .then((data) => {
+      response.status(200).json(data);
     })
     .catch((error) => next(error));
 };
@@ -78,4 +78,4 @@ exports.deleteEmployee = (request, response, next) => {
       response.status(200).json(result);
     })
     .catch((error) => next(error));
-}
+};

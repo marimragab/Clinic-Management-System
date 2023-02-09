@@ -1,19 +1,11 @@
 const mongoose = require("mongoose");
 const AutoIncrement = require("mongoose-sequence")(mongoose);
 
-// const autoIncrement = require("mongoose-auto-increment");
-// autoIncrement.initialize(mongoose.connection);
 const medicineSchema = new mongoose.Schema(
   {
     _id: { type: Number },
-    // id_of_medicine: {
-    //     type: mongoose.Types.ObjectId,
-    //     required: [true, "You Should provide patient data"],
-    //     // ref: "",
-    //   },
     name: {
       type: String,
-      // required:
       require: true,
       unique: true,
     },
@@ -32,16 +24,6 @@ const medicineSchema = new mongoose.Schema(
   }
   // { timestamps: true }
 );
-
-// medicineSchema.plugin(autoIncrement.plugin, {
-
-//     model: "medicine",
-
-//     field: "_id",
-
-//     startAt: 1,
-
-// });
 
 medicineSchema.plugin(AutoIncrement, { id: "medicine" });
 module.exports = mongoose.model("medicines", medicineSchema);

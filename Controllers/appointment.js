@@ -5,11 +5,7 @@ const Patient = mongoose.model("patients");
 const Doctor = require("../Models/doctor");
 const filerResults = require("./../utils/filterAndSort");
 const { sendEmail } = require("./../utils/email");
-const appointment = require("../Models/appointment");
 
-//! No need for get all appointment on general, you need:
-//? Get specific doctor appointments on specific day (doctor only,admin)
-//? Get all appointment on specific day for all doctors (receptionist)
 const getAllAppointments = async (request, response, next) => {
   console.log(request.query);
   try {
@@ -56,13 +52,6 @@ const getAllAppointmentsOnSpecificDay = async (request, response, next) => {
   }
 };
 
-//! First check of the patient that tries to create a new appointment is registered on our system or not,if
-//! not then we take his all data and register him on our system(front).(authentication ispatient)
-//! check if the date and time choosed are available for the doctor choiced, if not then we tells him to choose
-//! another appointment
-//! When he chooses suitable appointment then we notify the doctor with that new appointment and add that appointment
-//! to the doctor array of appointment objects
-//! Finally we save the appointment data on the database
 const addNewAppointment = async (request, response, next) => {
   let { patient, doctor, date, time, appointmentType } = request.body;
   try {
@@ -133,7 +122,7 @@ const addNewAppointment = async (request, response, next) => {
         //await Doctor.findOneAndUpdate({_id:doctor},{$push: { appointment:newAppointment._id  }})
         await isDoctor.save();
         sendEmail(
-          "mariam.relshafei@yahoo.com",
+          isDoctor.email,
           "New Appointment Assigned",
           `<h1>Hello ${isDoctor.name},</h1><p>Hope all is well ...</p><p>We send email that email to you to notify you with your new appointment</p><p>Appointment Details are detailed below:</p><h3>Appointment Date: ${newAppointment.date}</h3><h3>Appointment Time: ${newAppointment.time}</h3><h3>Appointment Type: ${newAppointment.appointmentType}</h3>`
         );
@@ -146,29 +135,8 @@ const addNewAppointment = async (request, response, next) => {
   } catch (error) {
     next(error);
   }
-  // let newAppointment = new Appointment({
-  //   patient,
-  //   doctor,
-  //   date,
-  //   time,
-  //   appointmentType,
-  // });
-  // newAppointment
-  //   .save()
-  //   .then((data) => {
-  //
-  //     response.status(200).json(data);
-  //   })
-  //   .catch((error) => next(error));
 };
 
-//! update only the specific value user want to update
-//! notify the doctor with the update
-//! update the doctor appointments array
-//! if the patient updated the doctor, then:
-//* notify the old doctor that the patient cancelled the appointment (delete the appointment from doctor's appointments array)
-//* add the appointment to the new doctor and notify him
-//! patient only can update his appointment (doctor may can update also ?? discuss with team)
 const updateAppointment = async (request, response, next) => {
   const userUpdatesKeys = Object.keys(request.body);
   console.log(userUpdatesKeys);
