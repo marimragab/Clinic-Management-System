@@ -167,7 +167,7 @@ const updateInvoiceValidations = [
     .isLength({ min: 1 })
     .withMessage("Served Services must contain at least one service data")
     .optional(),
-  body("medicines.*.medicine")
+  body("medicines.*.medicineInfo")
     .notEmpty()
     .withMessage("Medicine id is required")
     .isInt()
