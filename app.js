@@ -11,7 +11,7 @@ const employeeRoute = require("./Routes/employee");
 const ServicesRoute = require("./Routes/clinicServices");
 const prescriptionRoute = require("./Routes/prescription");
 const invoiceRoute = require("./Routes/invoice");
-
+const reportsRoute=require("./Routes/report")
 // const authRoute = require("./Controllers/authentication");
 // const authenticationMW = require("./Middlewares/authenticationMW");
 
@@ -60,6 +60,7 @@ app.use(employeeRoute);
 app.use(ServicesRoute);
 app.use(prescriptionRoute);
 app.use(invoiceRoute);
+app.use(reportsRoute)
 
 // Not Found Middleware
 app.use((request, response, next) => {
