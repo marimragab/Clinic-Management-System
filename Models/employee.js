@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const AutoIncrement = require("mongoose-sequence")(mongoose);
+const bcrypt=require('bcrypt') 
 
 const addressschema = new mongoose.Schema(
   {
@@ -48,6 +49,16 @@ const schema = new mongoose.Schema(
  
 },{ _id: false })
 
+schema.pre('save',async function(next) {
+  try{
+      const salt=await bcrypt.genSalt(10)
+      const haspassword= await bcrypt.hash(this.password,salt)
+      this.password=haspassword
+      next()
+  }catch(error){
+    next(error)
+  }
+})
 schema.plugin(AutoIncrement,{id:"employee"});
 
 mongoose.model("employees",schema)
