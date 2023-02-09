@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Appointment = require("../Models/appointment");
-// const Patient = require("../Models/patient");
-// const Doctor = require("../Models/doctor");
+const Patient = require("../Models/patient");
+const Doctor = require("../Models/doctor");
 const filerResults = require("./../utils/filterAndSort");
 const { sendEmail } = require("./../utils/email");
 
@@ -64,14 +64,13 @@ const addNewAppointment = async (request, response, next) => {
   // let isPatient = await Patient.findOne({ _id: patient });
   // let isDoctor = await Doctor.findOne({ _id: doctor });
   //! the date of the appointment must be the date of current day if its suitable or the after that
-  // if (!isValidDate(date)) {
-  //   let error = new Error(
-  //     "Unvalid date, you should provide date after or equal today"
-  //   );
-  //   next(error);
-  // } else {
+  if (!isValidDate(date)) {
+    let error = new Error(
+      "Unvalid date, you should provide date after or equal today"
+    );
+    next(error);
+  } else {
   let newAppointment = new Appointment({
-    _id: mongoose.Types.ObjectId(),
     patient,
     doctor,
     date,
@@ -89,7 +88,7 @@ const addNewAppointment = async (request, response, next) => {
       response.status(200).json(data);
     })
     .catch((error) => next(error));
-  // }
+  }
 };
 
 //! update only the specific value user want to update
@@ -143,12 +142,7 @@ const deleteAppointment = (request, response, next) => {
 };
 
 function isValidDate(date) {
-  let today = new Date()
-    .toLocaleDateString()
-    .replaceAll("/", "-")
-    .split("-")
-    .reverse()
-    .join("-");
+  let today = new Date().toISOString().split('T')[0];
   return date >= today;
 }
 

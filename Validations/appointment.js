@@ -4,13 +4,13 @@ const addAppointmentValidations = [
   body("patient")
     .notEmpty()
     .withMessage("Patient id is required")
-    .isMongoId()
-    .withMessage("Patient id must be objectId"),
+    .isInt()
+    .withMessage("Patient id must be number"),
   body("doctor")
     .notEmpty()
     .withMessage("Doctor id is required")
-    .isMongoId()
-    .withMessage("Doctor id must be objectId"),
+    .isInt()
+    .withMessage("Doctor id must be number"),
   body("date")
     .notEmpty()
     .withMessage("Appointment Date is required")
@@ -34,13 +34,13 @@ const updateAppointmentValidations = [
   body("id")
     .notEmpty()
     .withMessage("Appointment id is required")
-    .isMongoId()
-    .withMessage("Appointment id must be objectId"),
+    .isInt()
+    .withMessage("Appointment id must be number"),
   body("doctor")
     .notEmpty()
     .withMessage("Doctor id is required")
-    .isMongoId()
-    .withMessage("Doctor id must be objectId")
+    .isInt()
+    .withMessage("Doctor id must be number")
     .optional(),
   body("date")
     .notEmpty()
@@ -68,16 +68,16 @@ const deleteAppointmentValidations = [
   body("id")
     .notEmpty()
     .withMessage("Appointment id is required")
-    .isMongoId()
-    .withMessage("Appointment id must be objectId"),
+    .isInt()
+    .withMessage("Appointment id must be number"),
 ];
 
 const getDoctorAppointmentsOnDayValidations = [
   param("doctor")
     .notEmpty()
     .withMessage("Doctor id is required")
-    .isMongoId()
-    .withMessage("Doctor id must be objectId"),
+    .isInt()
+    .withMessage("Doctor id must be number"),
   param("day")
     .notEmpty()
     .withMessage("Date is required")
@@ -91,5 +91,5 @@ module.exports = {
   addAppointmentValidations,
   updateAppointmentValidations,
   deleteAppointmentValidations,
-  getDoctorAppointmentsOnDayValidations
+  getDoctorAppointmentsOnDayValidations,
 };

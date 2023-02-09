@@ -1,17 +1,18 @@
 const mongoose = require("mongoose");
+const AutoIncrement = require("mongoose-sequence")(mongoose);
 
 const appointmentSchema = new mongoose.Schema(
   {
-    _id: mongoose.Types.ObjectId,
+    _id: Number,
     patient: {
-      type: mongoose.Types.ObjectId,
+      type: Number,
       required: [true, "You Should provide patient data"],
-      // ref: "",
+      ref: "patients",
     },
     doctor: {
-      type: mongoose.Types.ObjectId,
+      type: Number,
       required: [true, "You Should provide doctor data"],
-      // ref: "",
+      ref: "doctors",
     },
     date: {
       type: String,
@@ -50,7 +51,9 @@ const appointmentSchema = new mongoose.Schema(
       required: [true, "You Should provide appointment type"],
     },
   },
-  { timestamps: true }
+  { timestamps: true },
+  { _id: false }
 );
 
+appointmentSchema.plugin(AutoIncrement, { id: "appointment" });
 module.exports = mongoose.model("appointments", appointmentSchema);
