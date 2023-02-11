@@ -1,12 +1,11 @@
 const nodemailer = require("nodemailer");
 const sendGridTransport = require("nodemailer-sendgrid-transport");
 
-const clinicEmail = "bright.simle.care@gmail.com";
+const clinicEmail = process.env.CLINIC_EMAIL;
 const transporter = nodemailer.createTransport(
   sendGridTransport({
     auth: {
-      api_key:
-        "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",
+      api_key: process.env.API_KEY,
     },
   })
 );
