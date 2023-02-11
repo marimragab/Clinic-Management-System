@@ -12,8 +12,8 @@ const addPatientValidation = [
   body("password")
     .notEmpty()
     .withMessage("Password is required")
-    .isStrongPassword()
-    .withMessage("Enter a valid password"),
+    .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/)
+    .withMessage("please insert valid password"),
 
   body("age")
     .notEmpty()

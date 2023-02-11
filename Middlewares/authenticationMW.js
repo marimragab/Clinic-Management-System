@@ -7,13 +7,15 @@ module.exports = (request, response, next) => {
     console.log(decodedToken);
     request.id = decodedToken.id;
     request.role = decodedToken.role;
+    next();
   } catch (error) {
     error.status = 403;
     error.message = "Not Authorized";
     next(error);
   }
-  next();
 };
+
+//!Tooooo Many Roles, Make authorization more generic later
 
 module.exports.isReceptionist = (request, response, next) => {
   if (request.role == "receptionist") {
