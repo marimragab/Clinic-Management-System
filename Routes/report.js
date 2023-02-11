@@ -3,18 +3,17 @@ const express = require("express");
 const {
   getInvoicesAtSpecificPeriod,
   getInvoicesAtSpecificDay,
+  getAllAppointmentsOnSpecificDay,
+  getSpecificDoctorAppointmentsOnDay
 } = require("../Controllers/report");
 
 const validator = require("./../Middlewares/validationMW");
 
-const {
-  getSpecificDoctorAppointmentsOnDay,
-  getAllAppointmentsOnSpecificDay,
-} = require("../Controllers/appointment");
 
 const {
   getDoctorAppointmentsOnDayValidations,
 } = require("./../Validations/appointment");
+
 const {
   isAccountant,
   isReceptionistOrDoctorOrNurse,
@@ -30,7 +29,7 @@ router.get("/report/invoices", isAccountant, getInvoicesAtSpecificPeriod);
 router.get("/report/invoices/:day", isAccountant, getInvoicesAtSpecificDay);
 
 router
-  .route("/appointment/:doctor/:day")
+  .route("/report/appointment/:doctor/:day")
   .get(
     getDoctorAppointmentsOnDayValidations,
     validator,
@@ -38,6 +37,6 @@ router
     getSpecificDoctorAppointmentsOnDay
   );
 
-router.get("/appointment/day", isReceptionist, getAllAppointmentsOnSpecificDay);
+router.get("/report/appointment/:day", isReceptionist, getAllAppointmentsOnSpecificDay);
 
 module.exports = router;

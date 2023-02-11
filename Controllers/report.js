@@ -1,7 +1,5 @@
-const mongoose = require("mongoose");
 const Invoice = require("../Models/invoice");
-require("./../Models/clinicServices");
-const ClinicServices = mongoose.model("clinicServices");
+const Appointment = require("../Models/appointment");
 
 const getInvoicesAtSpecificPeriod = async (request, response, next) => {
   console.log(request.query);
@@ -48,4 +46,39 @@ const getInvoicesAtSpecificDay = async (request, response, next) => {
   }
 };
 
-module.exports = { getInvoicesAtSpecificPeriod, getInvoicesAtSpecificDay };
+const getSpecificDoctorAppointmentsOnDay = async (request, response, next) => {
+  try {
+    const { doctor, day } = request.params;
+    let doctorAppointments = await Appointment.find({
+      doctor,
+      date: day,
+    });
+    response
+      .status(200)
+      .json({ count: doctorAppointments.length, doctorAppointments });
+  } catch (error) {
+    next(error);
+  }
+};
+
+//! validation on date needed here
+const getAllAppointmentsOnSpecificDay = async (request, response, next) => {
+  let { day } = request.params;
+  try {
+    let allAppointmentsOnDay = await Appointment.find({
+      date: day,
+    });
+    response
+      .status(200)
+      .json({ day, "All Appointments": allAppointmentsOnDay });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = {
+  getInvoicesAtSpecificPeriod,
+  getInvoicesAtSpecificDay,
+  getAllAppointmentsOnSpecificDay,
+  getSpecificDoctorAppointmentsOnDay,
+};
