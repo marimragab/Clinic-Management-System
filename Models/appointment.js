@@ -50,6 +50,15 @@ const appointmentSchema = new mongoose.Schema(
       },
       required: [true, "You Should provide appointment type"],
     },
+    paymentMethod: {
+      type: String,
+      enum: {
+        values: ["Cash", "Credit Card"],
+        message:
+          "{VALUE} is not valid,value must be one of Cash, Credit Card,Insurance Card",
+      },
+      required: [true, "You Should provide payment method"],
+    },
   },
   { timestamps: true },
   { _id: false }

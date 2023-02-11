@@ -18,42 +18,10 @@ const getAllAppointments = async (request, response, next) => {
   }
 };
 
-const getSpecificDoctorAppointmentsOnDay = async (request, response, next) => {
-  try {
-    const { doctor, day } = request.params;
-    let doctorAppointments = await Appointment.find({
-      doctor,
-      date: day,
-    });
-    // if (doctorAppointments)
-    response
-      .status(200)
-      .json({ count: doctorAppointments.length, doctorAppointments });
-    // else
-    //   response
-    //     .status(200)
-    //     .json({ message: "This doctor has no appointments on that day" });
-  } catch (error) {
-    next(error);
-  }
-};
 
-const getAllAppointmentsOnSpecificDay = async (request, response, next) => {
-  console.log(request.params.date);
-  let { date } = request.query;
-  // console.log(date.query("/", "-"));
-  try {
-    let allAppointmentsOnDay = await Appointment.find({
-      date: request.query.date,
-    });
-    response.status(200).json(allAppointmentsOnDay);
-  } catch (error) {
-    next(error);
-  }
-};
 
 const addNewAppointment = async (request, response, next) => {
-  let { patient, doctor, date, time, appointmentType } = request.body;
+  let { patient, doctor, date, time, appointmentType ,paymentMethod} = request.body;
   try {
     let isPatient = await Patient.findOne({ _id: patient });
     let isDoctor = await Doctor.findOne({ _id: doctor }).populate({
@@ -77,16 +45,16 @@ const addNewAppointment = async (request, response, next) => {
         (appointment) => appointment.date == date
       );
       console.log(appointmentsAtSelectedDate);
-      // If there are appointments on that day, then we check if the time selected available or not
+      //! If there are appointments on that day, then we check if the time selected available or not
       if (appointmentsAtSelectedDate.length > 0) {
         let unavailableTimes = appointmentsAtSelectedDate.map(
           (appointment) => appointment.time
         );
         // console.log(unavailableTimes);
         // console.log(unavailableTimes.includes(time));
-        //if present appointments times includes the choosed time then this day is not available
+        //!if present appointments times includes the choosed time then user should choose another time
         if (unavailableTimes.includes(time)) {
-          throw new Error("Sorry,but you can't book appointment at that date");
+          throw new Error("Sorry,but you can't book appointment at that time, choose another time");
         } else {
           let newAppointment = new Appointment({
             patient,
@@ -94,6 +62,7 @@ const addNewAppointment = async (request, response, next) => {
             date,
             time,
             appointmentType,
+            paymentMethod
           });
           await newAppointment.save();
           isDoctor.appointment.push(newAppointment._id);
@@ -109,13 +78,14 @@ const addNewAppointment = async (request, response, next) => {
           });
         }
       } else {
-        // if there is no appointments at that day,so add the new appointment to the doctor and to the appointment collection
+        //! if there is no appointments at that day,so add the new appointment to the doctor and to the appointment collection
         let newAppointment = new Appointment({
           patient,
           doctor,
           date,
           time,
           appointmentType,
+          paymentMethod
         });
         await newAppointment.save();
         isDoctor.appointment.push(newAppointment._id);
@@ -187,8 +157,6 @@ function isValidDate(date) {
 
 module.exports = {
   getAllAppointments,
-  getSpecificDoctorAppointmentsOnDay,
-  getAllAppointmentsOnSpecificDay,
   addNewAppointment,
   updateAppointment,
   deleteAppointment,
