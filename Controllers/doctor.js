@@ -16,7 +16,6 @@ const addNewDoctor = async (request, response, next) => {
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(request.body.password, salt);
   let newDoctor = new doctorSchema({
-    _id: mongoose.Types.ObjectId(),
     name: request.body.name,
     specialization: request.body.specialization,
     appointment: request.body.appointment,

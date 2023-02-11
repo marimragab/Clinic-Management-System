@@ -1,13 +1,14 @@
 const { param, body, query } = require("express-validator");
+const Doctor=require("./../Models/doctor")
 
 const addDoctorValidations = [
   body("name")
-    .isAlpha()
+    .isAlpha("en-US", { ignore: "s" })
     .withMessage("name should be string")
     .isLength({ max: 12 })
     .withMessage("length of name <12")
     .custom(async (value) => {
-      const doctor = await doctor.findOne({
+      const doctor = await Doctor.findOne({
         name: value,
       });
       if (doctor) {
